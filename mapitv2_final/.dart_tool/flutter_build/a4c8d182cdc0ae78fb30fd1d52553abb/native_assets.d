@@ -1,0 +1,1 @@
+ C:\\dev\\MapIt_Demo\\alecs\\.dart_tool\\flutter_build\\a4c8d182cdc0ae78fb30fd1d52553abb\\native_assets.yaml: 
