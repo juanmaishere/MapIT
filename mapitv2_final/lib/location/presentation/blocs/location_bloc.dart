@@ -25,7 +25,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   void _onLoadMap(LoadMap event, Emitter<LocationState> emit) async {
     final LocationState state =
         await _geolocationRepository.getCurrentLocation();
-    final posts = await _postRepository.getUserPost(event.userId);
+        final posts = await _postRepository.getUserPost(event.userId);
     if (state is LocationLoaded) {
       emit(LocationLoaded(
           //Acá podemos agregar los places cercanos o todos directamente, pero primero hay que crear esas funciones
@@ -43,17 +43,18 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       LocationLoaded loadedState = state as LocationLoaded;
 
       var respuesta = await _postRepository.UserPostToDb(event.post);
-      if (respuesta == true) {
       // Agrega el nuevo marcador a la lista de marcadores
+      if (respuesta == true) {
       List<PostModel> newPlaces = List.from(loadedState.places ?? [])
         ..add(event.post);
-         emit(loadedState.copyWith(places: newPlaces));
+         emit(loadedState.copyWith(places: newPlaces)); 
       }
       else {
         print("Error al agregar lugar");
       }
+    }    
 
       // Emite un nuevo estado con los marcadores actualizados
-    }
+    
   }
 }

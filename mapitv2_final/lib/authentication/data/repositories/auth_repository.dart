@@ -35,6 +35,8 @@ class AuthRepository {
       final credentials = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       final fireBaseUser = credentials.user;
+      sendUserData(fireBaseUser!.uid);
+      print(fireBaseUser!.uid);
       final newUser = UserModel(
         /*! en Dart se llama “postfix not null assertion”.
         Se utiliza para decirle al analizador de Dart que la expresión que precede no será null.

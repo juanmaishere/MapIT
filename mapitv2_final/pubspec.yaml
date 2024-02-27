@@ -28,7 +28,6 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  rive: 0.12.4
   flutter_slidable: 3.0.1
   cupertino_icons: ^1.0.2
   flutter:
@@ -67,9 +66,6 @@ flutter:
     - lib/assets/logo2.png
     - lib/assets/DonGraffiti.otf
     - lib/assets/AlexMarcelli.jpg
-    - lib/assets/friend.riv
-    - lib/assets/map.riv
-    - lib/assets/settings.riv
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

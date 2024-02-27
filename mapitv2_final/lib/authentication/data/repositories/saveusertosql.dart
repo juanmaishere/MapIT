@@ -4,18 +4,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 Future<void> sendUserData(String userId) async {
   final response = await http.post(
-    Uri.parse('http://127.0.0.1:5000/usuarios'),
+    Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/usuarios'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
     body: jsonEncode(<String, String>{
-      'id': userId,
+      'userid': userId,
     }),
   );
-  if (response.statusCode == 201) {
+  if (response.statusCode == 200) {
     print('User data sent successfully');
   } else {
     throw Exception('Failed to send user data');
+    print(response);
   }
 }
 final FirebaseAuth _auth = FirebaseAuth.instance;

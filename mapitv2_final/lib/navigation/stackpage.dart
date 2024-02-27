@@ -2,7 +2,6 @@ import '../location/presentation/screens/map_screen.dart';
 import '../settings/presentation/settingspage.dart';
 import '../friends/presentation/friends_page.dart';
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
 
 class Stackpage extends StatefulWidget {
   @override
@@ -44,14 +43,18 @@ class _Stack extends State<Stackpage> {
         backgroundColor: Color.fromARGB(255, 0, 0, 0),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Image.asset('assets/inactivemap.png', width: 45, height: 45),
-            activeIcon: Image.asset('assets/activemap.png'),
+            icon: Icon(
+              Icons.settings,
+              size: 35,
+            ),
             label: 'Map',
             backgroundColor: Color.fromARGB(255, 221, 93, 136),
           ),
           BottomNavigationBarItem(
-            icon: Image.asset('assets/31.png', width: 45, height: 45),
-            activeIcon: Image.asset('assets/32.png'),
+            icon: Icon(
+              Icons.settings,
+              size: 35,
+            ),
             label: 'Friends',
             backgroundColor: Color.fromARGB(255, 19, 9, 14),
           ),

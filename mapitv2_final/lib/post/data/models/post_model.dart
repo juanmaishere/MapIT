@@ -26,11 +26,14 @@ class PostModel extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
+      'places_id': postId,
       'latitud': lat,
       'longitude': lng,
       'post_text': content,
       'url_post_photo': image,
-      'user_id': "342",
+      'user_id': userId,
+      'post_title': title,
+      'private': private,
     };
   }
 
