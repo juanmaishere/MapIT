@@ -2,28 +2,29 @@ import '../location/presentation/screens/map_screen.dart';
 import '../settings/presentation/settingspage.dart';
 import '../friends/presentation/friends_page.dart';
 import 'package:flutter/material.dart';
+import '../authentication/data/repositories/auth_repository.dart';
 
 class Stackpage extends StatefulWidget {
   @override
-  _Stack createState() => _Stack();
+  Stack createState() => Stack();
 }
 
-class _Stack extends State<Stackpage> {
-  int _currentIndex = 0;
-
+class Stack extends State<Stackpage> {
+  int _currentIndex = 1;
+  final currentUser = AuthRepository().getCurrentUser;
   final List<Widget> _pages = [
-    MapScreen(),
     const Friendsscreen(),
+    MapScreen(),
     const SettingWidget(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('MapIt'),
-        backgroundColor: Color.fromARGB(230, 217, 56, 110),
-        titleTextStyle: TextStyle(color: Colors.black), // Corrected line
-      ),
+          title: Text('MapIt'),
+          backgroundColor: Color.fromARGB(230, 217, 56, 110),
+          titleTextStyle: TextStyle(color: Colors.black), // Corrected line
+          child: Text()),
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
@@ -47,7 +48,7 @@ class _Stack extends State<Stackpage> {
               Icons.settings,
               size: 35,
             ),
-            label: 'Map',
+            label: 'Friends',
             backgroundColor: Color.fromARGB(255, 221, 93, 136),
           ),
           BottomNavigationBarItem(
@@ -55,7 +56,7 @@ class _Stack extends State<Stackpage> {
               Icons.settings,
               size: 35,
             ),
-            label: 'Friends',
+            label: 'Map',
             backgroundColor: Color.fromARGB(255, 19, 9, 14),
           ),
           const BottomNavigationBarItem(

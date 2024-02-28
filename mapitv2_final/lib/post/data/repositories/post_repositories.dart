@@ -13,8 +13,8 @@ class PostRepository {
       List<dynamic> resData = jsonDecode(response.body);
       return resData
           .map((e) => PostModel(
-              postId: e['places_id'].toString(),
-              title: e['post_title'].toString(),
+              postId: e['places_id'],
+              title: e['post_title'],
               lat: double.parse(e['latitud']),
               lng: double.parse(e['longitude']),
               content: e['post_text'],
