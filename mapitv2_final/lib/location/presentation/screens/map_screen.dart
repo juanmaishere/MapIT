@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:map_it/authentication/data/models/user_model.dart';
 import 'package:map_it/geolocation/data/geolocation_repository.dart';
 import 'package:map_it/location/presentation/blocs/location_bloc.dart';
 import 'package:map_it/post/data/repositories/post_repositories.dart';
@@ -13,7 +14,7 @@ import '../../../authentication/data/repositories/auth_repository.dart';
 
 class MapScreen extends StatelessWidget {
   MapScreen({Key? key}) : super(key: key);
-  final String currentUserId = AuthRepository().getCurrentUser().id;
+  final UserModel currentUser = AuthRepository().getCurrentUser();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class MapScreen extends StatelessWidget {
         final bloc = LocationBloc(
             postRepo: PostRepository(),
             geolocationRepo: GeolocationRepository());
-        bloc.add(LoadMap(userId: currentUserId));
+        bloc.add(LoadMap(userId: currentUser.id));
         return bloc;
       },
       child: Scaffold(
@@ -51,9 +52,8 @@ class MapScreen extends StatelessWidget {
                     zoomControlsEnabled: false,
                     onMapCreated: (GoogleMapController controller) {
                       controller.setMapStyle(mapStyle1);
-                      context
-                          .read<LocationBloc>()
-                          .add(LoadMap(controller: controller, userId: currentUserId));
+                      context.read<LocationBloc>().add(LoadMap(
+                          controller: controller, userId: currentUser.id));
                     },
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
@@ -73,9 +73,9 @@ class MapScreen extends StatelessWidget {
                                   context: context,
                                   builder: (BuildContext contextDialog) {
                                     return PostModal(
-                                      title: postTapped!.title!,
+                                      title: postTapped!.title,
                                       content: postTapped.content,
-                                      userId: currentUserId,
+                                      user: currentUser,
                                       post: postTapped,
                                       bloc: BlocProvider.of<LocationBloc>(
                                           context),
@@ -99,16 +99,19 @@ class MapScreen extends StatelessWidget {
                           builder: (BuildContext contextDialog) {
                             return FormModalWidget(
                                 post: null,
-                                userId: currentUserId,
+                                userId: currentUser.id,
                                 position: position,
                                 bloc: BlocProvider.of<LocationBloc>(context));
                           },
                         );
                       },
-                      icon: Icon(Icons.map),
-                      label: Text('Mapit'),
+                      icon: Icon(
+                        Icons.location_on,
+                        color: Colors.white,
+                      ),
+                      label: Text(''),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 238, 41, 41),
+                        backgroundColor: Color.fromARGB(255, 2, 25, 34),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -125,7 +128,6 @@ class MapScreen extends StatelessWidget {
                     child: SlidingButtonWidget(
                       onMapStyleChanged: () {
                         // Reload the map when the map style changes
-
                       },
                     ),
                   ),

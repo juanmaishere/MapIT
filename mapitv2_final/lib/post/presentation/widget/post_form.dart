@@ -5,20 +5,22 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:map_it/location/presentation/blocs/location_bloc.dart';
 import 'package:map_it/post/data/models/post_model.dart';
+import 'package:map_it/post/data/repositories/post_repositories.dart';
+
 class FormModalWidget extends StatefulWidget {
   PostModel? post;
   final String userId;
   final Position? position;
   final LocationBloc bloc;
-  FormModalWidget({
-    required this.post,
-    required this.userId,
-    required this.bloc,
-    this.position
-  });
+  FormModalWidget(
+      {required this.post,
+      required this.userId,
+      required this.bloc,
+      this.position});
   @override
   _FormModalWidgetState createState() => _FormModalWidgetState();
 }
+
 class _FormModalWidgetState extends State<FormModalWidget> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
@@ -33,7 +35,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
     final LocationBloc bloc = widget.bloc;
     if (post != null) {
       if (userId == post.userId) {
-        _titleController.text = post.title ??  '';
+        _titleController.text = post.title ?? '';
         _contentController.text = post.content ?? '';
         _isPrivate = post.private ?? true;
       } else {
@@ -56,14 +58,16 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                 height: 200,
                 decoration: BoxDecoration(
                   image: _selectedImage != null
-                    ? DecorationImage(
-                      image: MemoryImage(Uint8List.fromList(_selectedImage!)),
-                      fit: BoxFit.cover,
-                    )
-                    : DecorationImage(
-                      image: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-                      fit: BoxFit.cover,
-                    ),
+                      ? DecorationImage(
+                          image:
+                              MemoryImage(Uint8List.fromList(_selectedImage!)),
+                          fit: BoxFit.cover,
+                        )
+                      : DecorationImage(
+                          image: NetworkImage(
+                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
             ),
@@ -113,17 +117,21 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                   child: Text('Cancel'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    post = post ??  PostModel(
-                      userId: userId,
-                      postId: '$userId/${position!.latitude}-${position.longitude}',
-                      lat: position.latitude,
-                      lng: position.longitude,
-                      createdAt: DateTime.now().toString(),
-                      );
+                  onPressed: () async {
+                    post = post ??
+                        PostModel(
+                          userId: userId,
+                          postId:
+                              '$userId/${position!.latitude}-${position.longitude}',
+                          lat: position.latitude,
+                          lng: position.longitude,
+                          createdAt: DateTime.now().toString(),
+                        );
                     Navigator.of(context).pop();
-                    _savePost(post!, userId);
-                    bloc.add(AddPlace(position: position!, userId: userId, post: post!));
+                    bool saved = await _savePost(post!, userId);
+                    if (saved)
+                      bloc.add(AddPlace(
+                          position: position!, userId: userId, post: post!));
                   },
                   child: Text('Save'),
                 ),
@@ -134,17 +142,22 @@ class _FormModalWidgetState extends State<FormModalWidget> {
       ),
     );
   }
-  void _savePost(PostModel post, String userId) {
+
+  Future<bool> _savePost(PostModel post, String userId) async {
     final String title = _titleController.text;
     final String content = _contentController.text;
     final bool isPrivate = _isPrivate;
-    post.image = '';
+    post.image = await PostRepository().uploadImage(selectedIMage!, userId);
+    if (post.image == null) return false;
     post.title = title;
     post.content = content;
     post.private = isPrivate;
+    return true;
   }
+
   Future _pickImageFromGallery() async {
-    final returnImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (returnImage == null) return;
     setState(() {
       selectedIMage = File(returnImage.path);
@@ -152,7 +165,3 @@ class _FormModalWidgetState extends State<FormModalWidget> {
     });
   }
 }
-
-
-
-

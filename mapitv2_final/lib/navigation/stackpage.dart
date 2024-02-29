@@ -1,3 +1,5 @@
+import 'package:map_it/authentication/data/models/user_model.dart';
+
 import '../location/presentation/screens/map_screen.dart';
 import '../settings/presentation/settingspage.dart';
 import '../friends/presentation/friends_page.dart';
@@ -11,7 +13,7 @@ class Stackpage extends StatefulWidget {
 
 class Stack extends State<Stackpage> {
   int _currentIndex = 1;
-  final currentUser = AuthRepository().getCurrentUser;
+  final UserModel currentUser = AuthRepository().getCurrentUser();
   final List<Widget> _pages = [
     const Friendsscreen(),
     MapScreen(),
@@ -21,10 +23,29 @@ class Stack extends State<Stackpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text('MapIt'),
-          backgroundColor: Color.fromARGB(230, 217, 56, 110),
-          titleTextStyle: TextStyle(color: Colors.black), // Corrected line
-          child: Text()),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Text(
+              "MapIT",
+              style: TextStyle(fontFamily: 'DonGraffiti', color: Colors.white),
+            ),
+            Text(
+              "${currentUser.name}",
+              style:
+                  TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
+            ),
+            ClipOval(
+                child: Image.asset(
+              "lib/assets/AlexMarcelli.jpg",
+              width: 70,
+              height: 67,
+            )),
+          ],
+        ),
+        backgroundColor: Color.fromARGB(255, 2, 25, 48),
+        titleTextStyle: TextStyle(color: Colors.black),
+      ),
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
@@ -37,24 +58,30 @@ class Stack extends State<Stackpage> {
           });
         },
         unselectedLabelStyle:
-            const TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+            const TextStyle(color: Color.fromARGB(230, 217, 56, 110)),
         selectedLabelStyle: const TextStyle(color: Colors.white),
-        selectedItemColor: Color.fromARGB(255, 252, 252, 252),
-        unselectedItemColor: Color.fromARGB(255, 255, 255, 255),
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        selectedItemColor: const Color.fromARGB(255, 252, 252, 252),
+        unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
+        backgroundColor: Color.fromARGB(255, 2, 25, 34),
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(
-              Icons.settings,
+              Icons.people_outlined,
               size: 35,
             ),
             label: 'Friends',
             backgroundColor: Color.fromARGB(255, 221, 93, 136),
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              size: 35,
+            icon: Image.asset(
+              'lib/assets/inactivemap.png',
+              width: 50,
+              height: 50,
+            ),
+            activeIcon: Image.asset(
+              'lib/assets/activemap.png',
+              width: 50,
+              height: 50,
             ),
             label: 'Map',
             backgroundColor: Color.fromARGB(255, 19, 9, 14),

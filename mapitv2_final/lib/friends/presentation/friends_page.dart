@@ -53,33 +53,44 @@ class _Friendwidget extends State<Friendsscreen> {
                 endIndent: 75,
                 color: Colors.black, // Change to your desired color
               ),
+              SizedBox(
+                height: 25,
+              ),
               Align(
                 alignment: AlignmentDirectional(-0.9, 0),
                 child: Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(5, 10, 0, 0),
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: const FriendsrowWidget(
-                            name: "Teo"), // Include your FriendsrowWidget here
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        child: const FriendsrowWidget(
-                            name:
-                                "Sebita"), // Include your FriendsrowWidget here
+                      SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.bottomCenter,
+                              child: const FriendsrowWidget(
+                                  name:
+                                      "Teo"), // Include your FriendsrowWidget here
+                            ),
+                            Container(
+                              alignment: Alignment.bottomCenter,
+                              child: const FriendsrowWidget(
+                                  name:
+                                      "Sebita"), // Include your FriendsrowWidget here
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              Divider(
+              SizedBox(height: 25),
+              const Divider(
                 thickness: 3,
-                indent: 25,
-                endIndent: 25,
+                indent: 75,
+                endIndent: 75,
                 color: Colors.black, // Change to your desired color
               ),
               Padding(
@@ -88,11 +99,16 @@ class _Friendwidget extends State<Friendsscreen> {
                   onPressed: () async {
                     showTextAlertDialog(context);
                   },
-                  child: Text('Add Friend'),
+                  child: Text(
+                    'Add Friend',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black, // Change to your desired color
+                    backgroundColor: Color.fromARGB(
+                        255, 64, 184, 240), // Change to your desired color
                     textStyle: TextStyle(
-                      fontSize: 16,
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 20,
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     shape: RoundedRectangleBorder(

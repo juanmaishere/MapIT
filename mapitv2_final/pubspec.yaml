@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  firebase_storage: 11.6.7 
   flutter_slidable: 3.0.1
   cupertino_icons: ^1.0.2
   flutter:
@@ -63,6 +64,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - lib/assets/activemap.png
+    - lib/assets/inactivemap.png
     - lib/assets/logo2.png
     - lib/assets/DonGraffiti.otf
     - lib/assets/AlexMarcelli.jpg

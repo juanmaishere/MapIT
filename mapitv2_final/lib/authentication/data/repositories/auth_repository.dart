@@ -21,9 +21,11 @@ class AuthRepository {
       return user;
     });
   }
+
   UserModel getCurrentUser() {
     return AuthRepository()._firebaseAuth.currentUser!.toUser;
   }
+
   /*
   Crea un nuevo usuario con el correo electrónico y la contraseña proporcionados 
   y devuelve el usuario creado con el método nativo de FirebaseAuth o null
@@ -35,6 +37,10 @@ class AuthRepository {
       final credentials = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       final fireBaseUser = credentials.user;
+      if (fireBaseUser != null) {
+        await fireBaseUser.updateDisplayName(name);
+        await fireBaseUser.reload();
+      }
       sendUserData(fireBaseUser!.uid);
       print(fireBaseUser!.uid);
       final newUser = UserModel(

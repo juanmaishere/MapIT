@@ -2,19 +2,24 @@
 import 'package:map_it/post/data/models/post_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 
 class PostRepository {
   //Llamada a la api con http para que traiga un post de un usuario
   Future<List<PostModel>> getUserPost(String userId) async {
     final http.Response response = await http.get(Uri.parse(
-      'https://mapit-kezkcv4lwa-ue.a.run.app/get_places?user_id=$userId'));
-      if (response.statusCode >= 200 && response.statusCode <= 205) {
+        'https://mapit-kezkcv4lwa-ue.a.run.app/get_places?user_id=$userId'));
+    if (response.statusCode >= 200 && response.statusCode <= 205) {
       // Si el servidor devuelve una respuesta OK, parseamos el JSON
+
       List<dynamic> resData = jsonDecode(response.body);
+      print(resData);
       return resData
           .map((e) => PostModel(
-              postId: e['places_id'],
-              title: e['post_title'],
+              postId: e['places_id'].toString(),
+              title: "El titulo",
               lat: double.parse(e['latitud']),
               lng: double.parse(e['longitude']),
               content: e['post_text'],
@@ -23,7 +28,6 @@ class PostRepository {
               image: e['url_post_photo']))
           .toList();
     } else {
-      
       // Si la respuesta no es OK, lanzamos un error
       throw Exception('Failed to load data');
     }
@@ -47,6 +51,20 @@ class PostRepository {
       print(response.body);
       print(response.statusCode);
       return false;
+    }
+  }
+
+  Future<String?> uploadImage(File imageFile, String userId) async {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    try {
+      Reference ref =
+          storage.ref().child(userId).child(basename(imageFile.path));
+      await ref.putFile(imageFile);
+      String downloadURL = await ref.getDownloadURL();
+      return downloadURL;
+    } catch (e) {
+      print('Error al subir la imagen: $e');
+      return null;
     }
   }
 }
