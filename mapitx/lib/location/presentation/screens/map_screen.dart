@@ -51,7 +51,7 @@ class MapScreen extends StatelessWidget {
                     trafficEnabled: false,
                     zoomControlsEnabled: false,
                     onMapCreated: (GoogleMapController controller) {
-                      controller.setMapStyle(mapStyle1);
+                      controller.setMapStyle(mapStyle2);
                       context.read<LocationBloc>().add(LoadMap(
                           controller: controller, userId: currentUser.id));
                     },
@@ -87,9 +87,9 @@ class MapScreen extends StatelessWidget {
                         {},
                   ),
                   Positioned(
-                    bottom: 16.0,
-                    right: 16.0,
-                    child: ElevatedButton.icon(
+                    bottom: 30.0,
+                    right: 20.0,
+                    child: ElevatedButton(
                       onPressed: () async {
                         Position position = await Geolocator.getCurrentPosition(
                           desiredAccuracy: LocationAccuracy.high,
@@ -105,19 +105,18 @@ class MapScreen extends StatelessWidget {
                           },
                         );
                       },
-                      icon: Icon(
+                      child: Icon(
                         Icons.location_on,
                         color: Colors.white,
                       ),
-                      label: Text(''),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 2, 25, 34),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
+                          borderRadius: BorderRadius.circular(50.0),
                         ),
                         padding: EdgeInsets.symmetric(
                           vertical: 15.0,
-                          horizontal: 20.0,
+                          horizontal: 10.0,
                         ),
                       ),
                     ),
