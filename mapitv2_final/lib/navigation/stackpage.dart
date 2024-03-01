@@ -62,7 +62,7 @@ class Stack extends State<Stackpage> {
         selectedLabelStyle: const TextStyle(color: Colors.white),
         selectedItemColor: const Color.fromARGB(255, 252, 252, 252),
         unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
-        backgroundColor: Color.fromARGB(255, 2, 25, 34),
+        backgroundColor: const Color.fromARGB(255, 2, 25, 34),
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(
             icon: Icon(

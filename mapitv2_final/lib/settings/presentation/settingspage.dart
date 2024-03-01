@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingWidget extends StatefulWidget {
   const SettingWidget({Key? key}) : super(key: key);
-
   @override
   State<SettingWidget> createState() => _SettingWidgetState();
 }
@@ -12,8 +10,7 @@ class _SettingWidgetState extends State<SettingWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-      },
+      onTap: () {},
       child: WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -33,7 +30,12 @@ class _SettingWidgetState extends State<SettingWidget> {
                       ),
                 ),
               ),
-              // Your list of settings here...
+              _buildListTile(context, 'About Us'),
+              _buildListTile(context, 'Third Party Software'),
+              _buildListTile(context, 'Terms and Conditions'),
+              _buildListTile(context, 'Change Log'),
+              _buildListTile(context, 'Privacy Policy'),
+              _buildListTile(context, 'Help'),
               Spacer(),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
@@ -61,6 +63,22 @@ class _SettingWidgetState extends State<SettingWidget> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildListTile(BuildContext context, String title) {
+    return ListTile(
+      title: Text(
+        title,
+        style: Theme.of(context).textTheme.headline6,
+      ),
+      trailing: Icon(
+        Icons.read_more,
+        size: 20,
+      ),
+      onTap: () {
+        // Handle onTap event for each list item if needed
+      },
     );
   }
 }
