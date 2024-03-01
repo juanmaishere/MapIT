@@ -19,7 +19,7 @@ class PostRepository {
       return resData
           .map((e) => PostModel(
               postId: e['places_id'].toString(),
-              title: "El titulo",
+              title: e['post_title'],
               lat: double.parse(e['latitud']),
               lng: double.parse(e['longitude']),
               content: e['post_text'],
