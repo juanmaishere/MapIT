@@ -15,7 +15,6 @@ class FriendshipRepository {
 
     if (response.statusCode >= 200 && response.statusCode <= 205) {
       List<dynamic>? resData = jsonDecode(response.body);
-      print(resData);
       if (resData != null) {
         List<UserModel> friends = resData
             .map((e) =>

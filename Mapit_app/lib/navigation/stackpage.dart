@@ -5,6 +5,8 @@ import '../settings/presentation/settingspage.dart';
 import '../friends/presentation/friends_page.dart';
 import 'package:flutter/material.dart';
 import '../authentication/data/repositories/auth_repository.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+// Other imports...
 
 class Stackpage extends StatefulWidget {
   @override
@@ -19,80 +21,36 @@ class Stack extends State<Stackpage> {
     MapScreen(),
     const SettingWidget(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const Text(
-              "MapIT",
-              style: TextStyle(fontFamily: 'DonGraffiti', color: Colors.white),
-            ),
-            Text(
-              "${currentUser.name}",
-              style:
-                  TextStyle(fontWeight: FontWeight.w400, color: Colors.white),
-            ),
-            ClipOval(
-                child: Image.asset(
-              "lib/assets/AlexMarcelli.jpg",
-              width: 70,
-              height: 67,
-            )),
-          ],
-        ),
-        backgroundColor: Color.fromARGB(255, 2, 25, 48),
-        titleTextStyle: TextStyle(color: Colors.black),
-      ),
-      body: IndexedStack(
+      body: _pages[_currentIndex],
+      bottomNavigationBar: CurvedNavigationBar(
         index: _currentIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
           });
         },
-        unselectedLabelStyle:
-            const TextStyle(color: Color.fromARGB(230, 217, 56, 110)),
-        selectedLabelStyle: const TextStyle(color: Colors.white),
-        selectedItemColor: const Color.fromARGB(255, 252, 252, 252),
-        unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
-        backgroundColor: const Color.fromARGB(255, 2, 25, 34),
-        items: <BottomNavigationBarItem>[
-           BottomNavigationBarItem(
-            icon: Image.asset('lib/assets/friend.png', width: 50, height: 50,),
-            activeIcon: Image.asset('lib/assets/friends.png', width: 50, height: 50,),
-            label: 'Friends',
-            backgroundColor: Color.fromARGB(255, 24, 18, 20),
+        height: 55,
+        items: <Widget>[
+          Image.asset(
+            'lib/assets/friendactive.png',
+            width: 55,
+            height: 55,
           ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              'lib/assets/inactivemap.png',
-              width: 50,
-              height: 50,
-            ),
-            activeIcon: Image.asset(
-              'lib/assets/activemap.png',
-              width: 50,
-              height: 50,
-            ),
-            label: 'Map',
-            backgroundColor: Color.fromARGB(255, 19, 9, 14),
+          Image.asset(
+            'lib/assets/newmapactive.png',
+            width: 55,
+            height: 55,
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.settings,
-              size: 35,
-            ),
-            label: 'Settings',
-            backgroundColor: Color.fromARGB(255, 88, 219, 210),
-          ),
+          Icon(Icons.settings, size: 40, color: Color.fromARGB(255, 38, 111, 247),),
         ],
+        color: Color.fromARGB(255, 4, 2, 17),
+        buttonBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+        animationDuration: Duration(milliseconds: 350),
+        backgroundColor: Color.fromARGB(0, 0, 0, 0),
       ),
     );
   }

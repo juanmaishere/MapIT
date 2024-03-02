@@ -39,8 +39,8 @@ class SignUpPage extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.purple,
-                    Colors.pink
+                    Color.fromARGB(255, 228, 55, 55),
+                    Color.fromARGB(255, 22, 122, 228),
                   ], // Replace with your gradient colors
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -64,18 +64,18 @@ class SignUpPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
-                            image: AssetImage('lib/assets/logo2.png'),
+                            image: AssetImage('lib/assets/mapit.png'),
                             height: 200,
                             width: 200,
                           ),
-                          SizedBox(height: 30),
+                          SizedBox(height: 15),
                           Text(
                             "Sign Up",
                             style: TextStyle(
                                 fontSize: 27, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 15,
                           ),
                           FormContainerWidget(
                             controller: _usernameController,
@@ -99,7 +99,7 @@ class SignUpPage extends StatelessWidget {
                             isPasswordField: true,
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 15,
                           ),
                           GestureDetector(
                             onTap: () {
@@ -128,7 +128,7 @@ class SignUpPage extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -151,7 +151,7 @@ class SignUpPage extends StatelessWidget {
                                         color: Colors.blue,
                                         fontWeight: FontWeight.bold),
                                   )),
-                              SizedBox(height: 80),
+                              SizedBox(height: 60),
                             ],
                           )
                         ],

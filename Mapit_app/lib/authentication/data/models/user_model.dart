@@ -7,19 +7,21 @@ class UserModel extends Equatable {
   final String? name;
   final String? createdAt;
   final String? updatedAt;
+  List<UserModel>? friends;
 
   //Constructor
-  const UserModel(
+  UserModel(
     {
       required this.id,
       this.email,
       this.name,
       this.createdAt,
-      this.updatedAt
+      this.updatedAt,
+      this.friends,
     }
   );
 
-  static const empty = UserModel(id: '');
+  static final empty = UserModel(id: '');
 
   bool get isEmpty => this == UserModel.empty;
   bool get isNotEmpty => this != UserModel.empty;

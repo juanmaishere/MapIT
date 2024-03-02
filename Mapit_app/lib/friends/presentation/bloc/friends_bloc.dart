@@ -23,7 +23,7 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   _onLoadFriends(LoadFriends event, Emitter<FriendsState> emit) async {
     //llamado a la API
     List<UserModel>? friends = await _friendshipRepository.getUserFriends();
-        if (friends != null) emit(FriendsLoaded(friends: friends));
+    if (friends != null) emit(FriendsLoaded(friends: friends));
   }
 
   _onAddFriendship(AddFriend event, Emitter<FriendsState> emit) async {

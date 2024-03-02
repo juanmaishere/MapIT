@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  curved_navigation_bar: ^1.0.3
   firebase_storage: 11.6.7 
   flutter_slidable: 3.0.1
   cupertino_icons: ^1.0.2
@@ -65,10 +66,11 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - lib/assets/friends.png
-    - lib/assets/friend.png
-    - lib/assets/activemap.png
-    - lib/assets/inactivemap.png
+    - lib/assets/mapit.png
+    - lib/assets/friendinactive.png
+    - lib/assets/friendactive.png
+    - lib/assets/newmapactive.png
+    - lib/assets/newmapinactive.png
     - lib/assets/logo2.png
     - lib/assets/DonGraffiti.otf
     - lib/assets/AlexMarcelli.jpg

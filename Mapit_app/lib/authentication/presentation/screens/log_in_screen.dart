@@ -16,13 +16,6 @@ class LoginPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthBloc(authRepo: AuthRepository()),
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: const Text(
-            "MapIT",
-            style: TextStyle(fontFamily: 'DonGraffiti', fontWeight: FontWeight.bold, fontSize: 32),
-          ),
-        ),
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
@@ -39,32 +32,68 @@ class LoginPage extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Login",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    FormContainerWidget(
-                      controller: _emailController,
-                      hintText: "Email",
-                      isPasswordField: false,
-                    ),
-                    SizedBox(height: 10),
-                    FormContainerWidget(
-                      controller: _passwordController,
-                      hintText: "Password",
-                      isPasswordField: true,
-                    ),
-                    SizedBox(height: 30),
+            return Container(
+              padding: const EdgeInsets.fromLTRB(25, 100, 25, 100),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 228, 55, 55),
+                    Color.fromARGB(255, 22, 122, 228),
+                  ], // Replace with your gradient colors
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [
+                    0.0,
+                    1.0
+                  ], // Adjust stops for gradient color distribution
+                  tileMode: TileMode.clamp,
+                ),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  color: Colors.white,
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage('lib/assets/mapit.png'),
+                            height: 200,
+                            width: 200,
+                          ),
+                          SizedBox(height: 30),
+                          Text(
+                            "Log in",
+                            style: TextStyle(
+                                fontSize: 27, fontWeight: FontWeight.bold,),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          FormContainerWidget(
+                            controller: _emailController,
+                            hintText: "Email",
+                            isPasswordField: false,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          FormContainerWidget(
+                            controller: _passwordController,
+                            hintText: "Password",
+                            isPasswordField: true,
+                          ),
+                        
+                          
+                          SizedBox(
+                            height: 20,
+                          ),
                     GestureDetector(
                       onTap: () {
                         context.read<AuthBloc>().add(
@@ -78,7 +107,7 @@ class LoginPage extends StatelessWidget {
                         width: double.infinity,
                         height: 45,
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 233, 44, 44),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
@@ -125,6 +154,9 @@ class LoginPage extends StatelessWidget {
                   ],
                 ),
               ),
+                ),
+              ),
+            ),
             );
           },
         ),

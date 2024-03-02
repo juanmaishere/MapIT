@@ -68,6 +68,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "curved_navigation_bar",
+      "rootUri": "file:///C:/Users/rsjua/AppData/Local/Pub/Cache/hosted/pub.dev/curved_navigation_bar-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "equatable",
       "rootUri": "file:///C:/Users/rsjua/AppData/Local/Pub/Cache/hosted/pub.dev/equatable-2.0.5",
       "packageUri": "lib/",
@@ -542,7 +548,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-02T14:30:57.405352Z",
+  "generated": "2024-03-02T23:08:34.480964Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }

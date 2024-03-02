@@ -15,7 +15,6 @@ class PostRepository {
       // Si el servidor devuelve una respuesta OK, parseamos el JSON
 
       List<dynamic> resData = jsonDecode(response.body);
-      print(resData);
       return resData
           .map((e) => PostModel(
               postId: e['places_id'].toString(),
@@ -35,9 +34,6 @@ class PostRepository {
 
   Future<bool> UserPostToDb(PostModel newPost) async {
     String jsonpost = jsonEncode(newPost.toJson());
-    print(newPost);
-    print(jsonpost);
-    print(jsonpost.runtimeType);
     final http.Response response = await http.post(
       Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/places'),
       headers: {'Content-Type': 'application/json'},
@@ -48,8 +44,6 @@ class PostRepository {
       return true;
     } else {
       print("ERROR AL AÑADIR PLACE");
-      print(response.body);
-      print(response.statusCode);
       return false;
     }
   }

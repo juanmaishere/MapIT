@@ -12,8 +12,8 @@ abstract class LocationEvent extends Equatable {
 class LoadMap extends LocationEvent {
   final GoogleMapController? controller;
   // Add BuildContext parameter
-  final String userId;
-  const LoadMap({this.controller, required this.userId});
+  final UserModel user;
+  const LoadMap({this.controller, required this.user});
   @override
   List<Object?> get props => [controller];
 }
@@ -25,13 +25,11 @@ class AddPlace extends LocationEvent {
   @override
   List<Object?> get props => [position, userId];
 }
-class ChangeMapStyle extends LocationEvent {
-  final String newMapStyle;
-  const ChangeMapStyle(this.newMapStyle);
-  @override
-  List<Object?> get props => [newMapStyle];
+
+class LoadFriendsPost extends LocationEvent {
+  final List<UserModel> friends;
+
+  LoadFriendsPost({required this.friends});
 }
-
-
-
-
+class LoadFriendPost extends LocationEvent {}
+class DeleteFriendPost extends LocationEvent {}

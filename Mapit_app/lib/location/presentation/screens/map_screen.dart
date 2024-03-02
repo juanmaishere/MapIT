@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_it/authentication/data/models/user_model.dart';
+import 'package:map_it/friends/data/repository/friends_repository.dart';
+import 'package:map_it/friends/presentation/bloc/friends_bloc.dart';
 import 'package:map_it/geolocation/data/geolocation_repository.dart';
 import 'package:map_it/location/presentation/blocs/location_bloc.dart';
 import 'package:map_it/post/data/repositories/post_repositories.dart';
@@ -15,16 +17,17 @@ import '../../../authentication/data/repositories/auth_repository.dart';
 class MapScreen extends StatelessWidget {
   MapScreen({Key? key}) : super(key: key);
   final UserModel currentUser = AuthRepository().getCurrentUser();
-
+  var _mapController;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
         // Crea el Bloc y dispara el evento LoadMap para cambiar el estado
         final bloc = LocationBloc(
+            friendsBloc: FriendsBloc(authRepo: AuthRepository(), friendsRepo: FriendshipRepository()),
             postRepo: PostRepository(),
             geolocationRepo: GeolocationRepository());
-        bloc.add(LoadMap(userId: currentUser.id));
+        bloc.add(LoadMap(user: currentUser));
         return bloc;
       },
       child: Scaffold(
@@ -45,6 +48,13 @@ class MapScreen extends StatelessWidget {
             if (state is LocationLoaded) {
               return Stack(
                 children: [
+                  Positioned(top: 30, right: 10,
+              child: Text(
+              "@${currentUser.name}",
+              style:
+                  TextStyle(fontWeight: FontWeight.w400, color: Color.fromARGB(255, 0, 0, 0)),
+            ),
+            ),
                   GoogleMap(
                     myLocationEnabled: true,
                     buildingsEnabled: false,
@@ -52,8 +62,9 @@ class MapScreen extends StatelessWidget {
                     zoomControlsEnabled: false,
                     onMapCreated: (GoogleMapController controller) {
                       controller.setMapStyle(mapStyle2);
+                      _mapController = controller; // Save the controller instance
                       context.read<LocationBloc>().add(LoadMap(
-                          controller: controller, userId: currentUser.id));
+                          controller: controller, user: currentUser));
                     },
                     initialCameraPosition: CameraPosition(
                       target: LatLng(
@@ -125,9 +136,11 @@ class MapScreen extends StatelessWidget {
                     top: 50.0, // Adjust the top position as needed
                     right: 10.0, // Adjust the right position as needed
                     child: SlidingButtonWidget(
-                      onMapStyleChanged: () {
-                        // Reload the map when the map style changes
+                      onTapCallback: () {
+                      _mapController?.setMapStyle(mapStyle3); // Reload the map when the map style changes
                       },
+                      onTapCallback2:() => _mapController?.setMapStyle(mapStyle2),
+                      onTapCallback3: () => _mapController?.setMapStyle(mapStyle1),
                     ),
                   ),
                 ],
