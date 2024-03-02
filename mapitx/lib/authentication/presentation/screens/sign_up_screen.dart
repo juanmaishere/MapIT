@@ -27,7 +27,7 @@ class SignUpPage extends StatelessWidget {
             if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(builder: (context) => Stackpage()),
                 (route) => false,
               );
             }
@@ -110,11 +110,6 @@ class SignUpPage extends StatelessWidget {
                                       password: _passwordController.text,
                                     ),
                                   );
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Stackpage()),
-                                  (route) => false);
                             },
                             child: Container(
                               width: double.infinity,

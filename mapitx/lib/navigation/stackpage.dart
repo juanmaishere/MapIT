@@ -64,11 +64,9 @@ class Stack extends State<Stackpage> {
         unselectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         backgroundColor: const Color.fromARGB(255, 2, 25, 34),
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.people_outlined,
-              size: 35,
-            ),
+           BottomNavigationBarItem(
+            icon: Image.asset('lib/assets/friend.png', width: 50, height: 50,),
+            activeIcon: Image.asset('lib/assets/friends.png'),
             label: 'Friends',
             backgroundColor: Color.fromARGB(255, 221, 93, 136),
           ),

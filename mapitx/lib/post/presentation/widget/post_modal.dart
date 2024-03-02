@@ -61,11 +61,12 @@ class PostModal extends StatelessWidget {
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.w500),
                               ),
+                              SizedBox(height: 4),
                               Text(
                                 "@${user.name!}",
                                 style: const TextStyle(
                                     fontSize: 14.0,
-                                    fontWeight: FontWeight.w400),
+                                    fontWeight: FontWeight.w200),
                               ),
                             ]),
                       ),
@@ -94,6 +95,7 @@ class PostModal extends StatelessWidget {
                                 );
                               },
                             )),
+                            const SizedBox(width: 5,),
                         GestureDetector(
                           child: Icon(Icons.delete),
                           onTap: () {
