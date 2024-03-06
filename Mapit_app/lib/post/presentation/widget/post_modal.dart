@@ -8,6 +8,7 @@ import 'package:expandable_text/expandable_text.dart';
 class PostModal extends StatelessWidget {
   final String? title;
   final UserModel user;
+  final UserModel owner;
   final String? content;
   final LocationBloc? bloc;
   PostModel post;
@@ -15,6 +16,7 @@ class PostModal extends StatelessWidget {
     required this.title,
     required this.user,
     required this.post,
+    required this.owner,
     this.bloc,
     this.content,
   });
@@ -73,7 +75,7 @@ class PostModal extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (user.id == post.userId)
+                  if (user.id == owner.id)
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [

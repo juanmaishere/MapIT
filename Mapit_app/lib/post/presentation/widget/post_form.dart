@@ -130,8 +130,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                     Navigator.of(context).pop();
                     bool saved = await _savePost(post!, userId);
                     if (saved)
-                      bloc.add(AddPlace(
-                          position: position!, userId: userId, post: post!));
+                      bloc.add(AddPlace(position: position!, userId: userId, post: post!));
                   },
                   child: Text('Save'),
                 ),

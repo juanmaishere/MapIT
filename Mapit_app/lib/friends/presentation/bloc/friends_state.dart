@@ -1,14 +1,27 @@
 part of 'friends_bloc.dart';
-@immutable
-sealed class FriendsState {}
-class FriendsInitial extends FriendsState {}
-class FriendDeleted extends FriendsState {}
-class FriendAdded extends FriendsState {}
-class FriendError extends FriendsState {}
-class FriendsLoaded extends FriendsState {
+
+class FriendsState {
   List<UserModel>? friends;
-  FriendsLoaded({this.friends});
+
 }
 
+class FriendsInitial extends FriendsState {}
 
+class FriendDeleted extends FriendsState {
+  final UserModel friend;
 
+  FriendDeleted({required this.friend});
+}
+
+class FriendAdded extends FriendsState {
+  final UserModel friend;
+
+  FriendAdded({required this.friend});
+}
+
+class FriendError extends FriendsState {}
+
+class FriendsLoaded extends FriendsState {
+
+  FriendsLoaded();
+}

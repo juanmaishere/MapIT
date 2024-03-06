@@ -1,5 +1,9 @@
 // Interfaz del repositorio de autenticación
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:http/http.dart' as http;
 import 'package:map_it/authentication/data/models/user_model.dart';
 import 'saveusertosql.dart';
 
@@ -42,7 +46,6 @@ class AuthRepository {
         await fireBaseUser.reload();
       }
       sendUserData(fireBaseUser!.uid, name);
-      print(fireBaseUser!.uid);
       final newUser = UserModel(
         /*! en Dart se llama “postfix not null assertion”.
         Se utiliza para decirle al analizador de Dart que la expresión que precede no será null.
@@ -85,6 +88,22 @@ class AuthRepository {
       ]);
     } catch (_) {
       //Manejo de exepciones
+    }
+  }
+
+  Future<UserModel?> getUserByName(String userName) async {
+    try {
+      final http.Response response = await http.get(Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/user/$userName'));
+      if (response.statusCode >= 200 && response.statusCode <= 205) {
+        final resData = jsonDecode(response.body);
+        final user = UserModel(id: resData['user_id'], name: resData['username']);
+        return user;
+      } else {
+        return null;
+      }
+    } on fb.FirebaseAuthException catch (e) {
+      //Manejar excepciones
+      return null;
     }
   }
 }

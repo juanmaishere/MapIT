@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_it/authentication/data/models/user_model.dart';
-import 'package:map_it/friends/data/repository/friends_repository.dart';
-import 'package:map_it/friends/presentation/bloc/friends_bloc.dart';
 import 'package:map_it/geolocation/data/geolocation_repository.dart';
 import 'package:map_it/location/presentation/blocs/location_bloc.dart';
+import 'package:map_it/post/data/models/post_model.dart';
 import 'package:map_it/post/data/repositories/post_repositories.dart';
 import 'package:map_it/post/presentation/widget/post_form.dart';
 import 'package:map_it/post/presentation/widget/post_modal.dart';
@@ -20,17 +19,7 @@ class MapScreen extends StatelessWidget {
   var _mapController;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        // Crea el Bloc y dispara el evento LoadMap para cambiar el estado
-        final bloc = LocationBloc(
-            friendsBloc: FriendsBloc(authRepo: AuthRepository(), friendsRepo: FriendshipRepository()),
-            postRepo: PostRepository(),
-            geolocationRepo: GeolocationRepository());
-        bloc.add(LoadMap(user: currentUser));
-        return bloc;
-      },
-      child: Scaffold(
+    return Scaffold(
         body: BlocConsumer<LocationBloc, LocationState>(
           listener: (context, state) {
             if (state is LocationError) {
@@ -71,31 +60,7 @@ class MapScreen extends StatelessWidget {
                           state.position.latitude, state.position.longitude),
                       zoom: 15,
                     ),
-                    padding: EdgeInsets.only(top: 50.0),
-                    markers: state.places?.map((post) {
-                          return Marker(
-                              markerId: MarkerId('${post.postId}'),
-                              position: LatLng(post.lat, post.lng),
-                              onTap: () {
-                                final postTapped = state.places?.firstWhere(
-                                    (p) =>
-                                        p.lat == post.lat && p.lng == post.lng);
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext contextDialog) {
-                                    return PostModal(
-                                      title: postTapped!.title,
-                                      content: postTapped.content,
-                                      user: currentUser,
-                                      post: postTapped,
-                                      bloc: BlocProvider.of<LocationBloc>(
-                                          context),
-                                    );
-                                  },
-                                );
-                              });
-                        }).toSet() ??
-                        {},
+                    markers: generateMarkersFromMap(state.places ?? {}, context, state, currentUser),
                   ),
                   Positioned(
                     bottom: 30.0,
@@ -149,7 +114,49 @@ class MapScreen extends StatelessWidget {
             return const SizedBox.shrink();
           },
         ),
-      ),
     );
   }
+}
+
+Set<Marker> generateMarkersFromMap(
+  Map<String, PostModel> postsMap, 
+  BuildContext context, 
+  LocationLoaded state, 
+  UserModel currentUser) {
+    Set<Marker> markers = {};
+
+    postsMap.forEach((postId, post) {
+      final Marker marker = Marker(
+        markerId: MarkerId(postId),
+        position: LatLng(post.lat, post.lng),
+        onTap: () {
+          // Lógica para manejar el tap en el marcador
+          final owner = (state.friends != null && state.friends!.isNotEmpty)
+              ? state.friends!.firstWhere(
+                  (u) => u.id == post.userId,
+                  orElse: () => currentUser,
+                )
+              : currentUser;
+          print('HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+          print('PostId: $postId - OwnerId: ${owner.id}');
+          showDialog(
+            context: context,
+            builder: (BuildContext contextDialog) {
+              return PostModal(
+                title: post.title,
+                content: post.content,
+                user: currentUser,
+                owner: owner,
+                post: post,
+                bloc: BlocProvider.of<LocationBloc>(context),
+              );
+            },
+          );
+        },
+      );
+
+      markers.add(marker);
+    });
+
+    return markers;
 }

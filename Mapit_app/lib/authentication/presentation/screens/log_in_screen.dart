@@ -63,7 +63,7 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
-                            image: AssetImage('lib/assets/mapit.png'),
+                            image: AssetImage('lib/assets/mapit2.png'),
                             height: 200,
                             width: 200,
                           ),

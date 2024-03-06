@@ -66,6 +66,7 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - lib/assets/mapit2.png
     - lib/assets/mapit.png
     - lib/assets/friendinactive.png
     - lib/assets/friendactive.png

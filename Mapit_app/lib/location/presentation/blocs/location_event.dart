@@ -31,5 +31,14 @@ class LoadFriendsPost extends LocationEvent {
 
   LoadFriendsPost({required this.friends});
 }
-class LoadFriendPost extends LocationEvent {}
-class DeleteFriendPost extends LocationEvent {}
+class LoadNewFriendPosts extends LocationEvent {
+  final UserModel friend;
+
+  LoadNewFriendPosts({required this.friend});
+}
+
+class DeleteFriendPosts extends LocationEvent {
+  final UserModel friend;
+
+  DeleteFriendPosts({required this.friend});
+}

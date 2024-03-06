@@ -1,9 +1,8 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_it/authentication/data/models/user_model.dart';
 import 'package:map_it/authentication/data/repositories/auth_repository.dart';
 import 'package:map_it/friends/data/repository/friends_repository.dart';
-import 'package:meta/meta.dart';
 part 'friends_event.dart';
 part 'friends_state.dart';
 
@@ -27,9 +26,17 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
   }
 
   _onAddFriendship(AddFriend event, Emitter<FriendsState> emit) async {
-    bool res = await _friendshipRepository.addFriend(event.userId);
-    if (res == true) emit(FriendAdded());
-    if (res == false) emit(FriendError());
+    UserModel? user = await _authRepository.getUserByName(event.userName);
+    if (user != null) {
+      bool res = await _friendshipRepository.addFriend(user.id);
+      if (res == true) {
+        emit(FriendAdded(user));
+      } else {
+        emit(FriendError());
+      }
+    } else {
+      emit(FriendError());
+    }
   }
 
   _onDeleteFriendship(DeleteFriend event, Emitter<FriendsState> emit) async {

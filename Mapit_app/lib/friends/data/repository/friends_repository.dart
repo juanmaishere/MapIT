@@ -18,7 +18,7 @@ class FriendshipRepository {
       if (resData != null) {
         List<UserModel> friends = resData
             .map((e) =>
-                UserModel(id: e['user2_id'] ?? '', name: e['username'] ?? ''))
+                UserModel(id: e['friend_id'] ?? '', name: e['username'] ?? ''))
             .toList();
 
         return friends;
@@ -32,7 +32,7 @@ class FriendshipRepository {
 
   Future<bool> addFriend(String userId) async {
     final response = await http.post(
-      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/add_friend'),
+      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/friends'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'user_id1': currentUserId,
@@ -49,14 +49,15 @@ class FriendshipRepository {
   }
 
   Future<bool> deleteFriend(String userId) async {
-    final response = await http.post(
-      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/delete_friend'),
+    final response = await http.delete(
+      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/friend'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'user_id1': currentUserId,
         'user_id2': userId,
       }),
     );
+
     if (response.statusCode >= 200 && response.statusCode <= 205) {
       print('Solicitud exitosa, respuesta: ${response.body}');
       return true;

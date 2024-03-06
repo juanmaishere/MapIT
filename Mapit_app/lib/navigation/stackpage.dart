@@ -25,7 +25,10 @@ class Stack extends State<Stackpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: CurvedNavigationBar(
         index: _currentIndex,
         onTap: (index) {

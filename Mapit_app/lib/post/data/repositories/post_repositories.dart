@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 
 class PostRepository {
   //Llamada a la api con http para que traiga un post de un usuario
-  Future<List<PostModel>> getUserPost(String userId) async {
+  Future<List<PostModel>?> getUserPost(String userId) async {
     final http.Response response = await http.get(Uri.parse(
         'https://mapit-kezkcv4lwa-ue.a.run.app/places/$userId'));
     if (response.statusCode >= 200 && response.statusCode <= 205) {
@@ -28,7 +28,8 @@ class PostRepository {
           .toList();
     } else {
       // Si la respuesta no es OK, lanzamos un error
-      throw Exception('Failed to load data');
+      return null;
+      
     }
   }
 
