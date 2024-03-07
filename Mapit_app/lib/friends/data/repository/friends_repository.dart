@@ -35,8 +35,8 @@ class FriendshipRepository {
       Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/friends'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'user_id1': currentUserId,
-        'user_id2': userId,
+        'user1_id': currentUserId,
+        'user2_id': userId,
       }),
     );
     if (response.statusCode >= 200 && response.statusCode <= 205) {
@@ -49,12 +49,13 @@ class FriendshipRepository {
   }
 
   Future<bool> deleteFriend(String userId) async {
+    print('currentUserId: $currentUserId, userId: $userId');
     final response = await http.delete(
-      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/friend'),
+      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/friends'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'user_id1': currentUserId,
-        'user_id2': userId,
+        'user1_id': currentUserId,
+        'user2_id': userId,
       }),
     );
 
@@ -63,6 +64,8 @@ class FriendshipRepository {
       return true;
     } else {
       print('Solicitud fallida con código de estado: ${response.statusCode}');
+      print('Respuesta: ${response.body}');
+      print(response.reasonPhrase);
       return false;
     }
   }

@@ -10,6 +10,7 @@ Optimización de rendimiento: Si la lista de amigos puede ser grande, podrías c
 
 class FriendsScreen extends StatelessWidget {
   FriendsScreen({Key? key}) : super(key: key);
+  final TextEditingController _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,16 @@ class FriendsScreen extends StatelessWidget {
               }
             }
             if (state is FriendAdded) {
-
+              // Emitir un evento en el LocationBloc para cargar los lugares de los amigos
+              if (context.read<LocationBloc>().state is LocationLoaded) {
+                context.read<LocationBloc>().add(LoadNewFriendPosts(friend: state.friend));
+              }
             }
             if (state is FriendDeleted) {
-
+              // Emitir un evento en el LocationBloc para cargar los lugares de los amigos
+              if (context.read<LocationBloc>().state is LocationLoaded) {
+                context.read<LocationBloc>().add(DeleteFriendPosts(friend: state.friend));
+              }
             }
           },
         ),
@@ -50,15 +57,19 @@ class FriendsScreen extends StatelessWidget {
             } else if (
               state is FriendsLoaded || 
               state is FriendDeleted || 
-              state is FriendAdded) { 
+              state is FriendAdded) {
+                print('Amigos: ${state.friends}');
                 return ListView.builder(
                   itemCount: state.friends!.length,
                   itemBuilder: (context, index) {
+                    print(state.friends![index]);
                     return FriendsRowWidget(user: state.friends![index]);
                   },
                 );
-            } else {
+            } else if (state is FriendError){
               return const Text('Something went wrong!');
+            } else {
+              return const SizedBox.shrink();
             }
           },
         ),
@@ -70,12 +81,49 @@ class FriendsScreen extends StatelessWidget {
               builder: (context) {
                 return AlertDialog(
                   title: const Text('Add a friend'),
-                  content: TextField(
-                    onSubmitted: (value) {
-                      context.read<FriendsBloc>().add(AddFriend(value));
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  content: Column(
+                    children: [
+                      const Text('Enter the username of your friend'),
+                      const SizedBox(height: 10),
+                      TextField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Username',
+                          hintText: 'Enter username',
+                        )
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('Cancel'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              final username = _usernameController.text;
+                              if (username.isEmpty) {
+                                // Muestra un mensaje de error al usuario
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Por favor, ingrese un valor.')),
+                                );
+                              } else {
+                                // Envía el valor al BLoC
+                                context.read<FriendsBloc>().add(AddFriend(username));
+                                Navigator.of(context).pop();
+                                _usernameController.text = '';
+                              }
+                            },
+                            child: const Text('Add'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ) 
                 );
               },
             );

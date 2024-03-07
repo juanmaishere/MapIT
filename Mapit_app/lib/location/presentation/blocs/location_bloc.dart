@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,9 +18,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     required GeolocationRepository geolocationRepo,
   })  : _postRepository = postRepo,
         _geolocationRepository = geolocationRepo,
-        super(LocationLoading()) {
+      super(LocationLoading()) {
     on<LoadMap>(_onLoadMap);
     on<AddPlace>(_onAddPlace);
+    on<DeletePlace>(_onDeletePlace);
     on<LoadFriendsPost>(_onLoadFriendsPost);
     on<LoadNewFriendPosts>(_onLoadNewFriendPosts);
     on<DeleteFriendPosts>(_onDeleteFriendPosts);
@@ -41,7 +41,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       );
       return;
     }
-    // En caso de falla o denied emitimos el estado devuelto
     emit(state);
   }
 
@@ -54,13 +53,25 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       if (respuesta == true) {
         Map<String, PostModel> newPlaces = Map.from(loadedState.places ?? {});
         newPlaces[event.post.postId!] = event.post;
-        emit(loadedState.copyWith());
+        emit(loadedState.copyWith(places: newPlaces));
       } else {
-        print("Error al agregar lugar");
+        emit(const LocationError('Error al agregar lugar'));
       }
     }
+  }
 
-    // Emite un nuevo estado con los marcadores actualizados
+  void _onDeletePlace(DeletePlace event, Emitter<LocationState> emit) async {
+    if (state is LocationLoaded) {
+      LocationLoaded loadedState = state as LocationLoaded;
+      final response = await _postRepository.deletePostDb(event.post);
+      if (response == true) {
+        final Map<String, PostModel> newPlaces = Map.from(loadedState.places!);
+        newPlaces.remove(event.post.postId);
+        emit(loadedState.copyWith(places: newPlaces));
+      } else {
+        emit(const LocationError('Error al eliminar lugar'));
+      }
+    }
   }
 
   void _onLoadFriendsPost(LoadFriendsPost event, Emitter<LocationState> emit) async {
@@ -68,7 +79,6 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       LocationLoaded loadedState = state as LocationLoaded;
       if (loadedState.friendsPostsLoaded == false) {
         for (final friend in event.friends) {
-          print('Friend: $friend');
           try {
             List<PostModel>? posts = await _postRepository.getUserPost(friend.id);
             if (posts != null) {
@@ -94,18 +104,24 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     if (state is LocationLoaded) {
       LocationLoaded loadedState = state as LocationLoaded;
       try {
-        List<PostModel>? posts = await _postRepository.getUserPost(event.friend.id);
-        if (posts != null) {
-          posts.forEach((element) { 
-            if (loadedState.places![element.postId] == null) {
-              loadedState.places![element.postId!] = element;
+        List<PostModel>? newPosts = await _postRepository.getUserPost(event.friend.id);
+        
+        final Map<String, PostModel> posts = Map.from(loadedState.places!);
+        if (newPosts != null) {
+          final List<UserModel> friends = List.from(loadedState.friends ?? [])..add(event.friend);
+          newPosts.forEach((element) { 
+            if (posts[element.postId] == null) {
+              posts[element.postId!] = element;
             }
           });
+  
+          emit(loadedState.copyWith(places: posts, friends: friends));
+        } else {
+          emit(const LocationError('Error al cargar los posts del amigo'));
         }
       } catch (e) {
         print('Error loading posts for friend ${event.friend.id}: $e');
       }
-      emit(loadedState.copyWith());
     } else {
       print('El estado actual no es LocationLoaded');
     }
@@ -114,11 +130,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   void _onDeleteFriendPosts(DeleteFriendPosts event, Emitter<LocationState> emit) {
     if (state is LocationLoaded) {
       LocationLoaded loadedState = state as LocationLoaded;
-      loadedState.places!.removeWhere((key, value) => key == event.friend.id);
-      emit(loadedState.copyWith());
+      final Map<String, PostModel> posts = Map.from(loadedState.places!);
+      posts.removeWhere((key, value) => value.userId == event.friend.id);
+      emit(loadedState.copyWith(places: posts));
     } else {
       print('El estado actual no es LocationLoaded');
     }
   }
-
 }

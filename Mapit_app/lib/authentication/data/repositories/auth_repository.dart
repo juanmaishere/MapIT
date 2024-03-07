@@ -93,10 +93,10 @@ class AuthRepository {
 
   Future<UserModel?> getUserByName(String userName) async {
     try {
-      final http.Response response = await http.get(Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/user/$userName'));
+      final http.Response response = await http.get(Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/search_user/$userName'));
       if (response.statusCode >= 200 && response.statusCode <= 205) {
         final resData = jsonDecode(response.body);
-        final user = UserModel(id: resData['user_id'], name: resData['username']);
+        final user = UserModel(id: resData['userid'], name: resData['username']);
         return user;
       } else {
         return null;

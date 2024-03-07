@@ -34,17 +34,34 @@ class PostRepository {
   }
 
   Future<bool> UserPostToDb(PostModel newPost) async {
-    String jsonpost = jsonEncode(newPost.toJson());
+    String jsonPost = jsonEncode(newPost.toJson());
     final http.Response response = await http.post(
       Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/places'),
       headers: {'Content-Type': 'application/json'},
-      body: jsonpost,
+      body: jsonPost,
     );
     if (response.statusCode >= 200 && response.statusCode <= 205) {
       print('PLACE AÑADIDO');
       return true;
     } else {
       print("ERROR AL AÑADIR PLACE");
+      return false;
+    }
+  }
+
+  Future<bool> deletePostDb(PostModel post) async {
+    String jsonPost = jsonEncode(post.toJson());
+    final http.Response response = await http.delete(
+      Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/places'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonPost,
+    );
+  
+    if (response.statusCode >= 200 && response.statusCode <= 205) {
+      print('PLACE ELIMINADO');
+      return true;
+    } else {
+      print("ERROR AL ELIMINAR   PLACE");
       return false;
     }
   }

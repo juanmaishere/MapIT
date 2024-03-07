@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:map_it/location/presentation/blocs/location_bloc.dart';
 import 'package:map_it/post/data/models/post_model.dart';
 import 'package:map_it/post/data/repositories/post_repositories.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FormModalWidget extends StatefulWidget {
   PostModel? post;
@@ -52,7 +53,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
           children: [
             GestureDetector(
               onTap: () {
-                _pickImageFromGallery();
+                _showImageSourceModal(context);
               },
               child: Container(
                 height: 200,
@@ -129,8 +130,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                         );
                     Navigator.of(context).pop();
                     bool saved = await _savePost(post!, userId);
-                    if (saved)
-                      bloc.add(AddPlace(position: position!, userId: userId, post: post!));
+                    if (saved) bloc.add(AddPlace(position: position!, userId: userId, post: post!));
                   },
                   child: Text('Save'),
                 ),
@@ -162,5 +162,63 @@ class _FormModalWidgetState extends State<FormModalWidget> {
       selectedIMage = File(returnImage.path);
       _selectedImage = File(returnImage.path).readAsBytesSync();
     });
+  }
+
+  Future _pickImageFromCamera() async {
+    // Check if camera permission is granted
+    var cameraStatus = await Permission.camera.status;
+    if (cameraStatus.isDenied || cameraStatus.isPermanentlyDenied) {
+      // Request camera permission
+      await Permission.camera.request();
+      // Check the status again after the user has responded to the permission request
+      cameraStatus = await Permission.camera.status;
+    }
+
+    if (cameraStatus.isGranted) {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (pickedFile == null) return;
+
+      setState(() {
+        selectedIMage = File(pickedFile.path);
+        _selectedImage = File(pickedFile.path).readAsBytesSync();
+      });
+    } else {
+      // Handle the case where the user denied camera permission
+      // You might want to show a message or take appropriate action
+      print('Camera permission denied');
+    }
+  }
+
+  Future _showImageSourceModal(BuildContext context) async {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 150,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Take Photo'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageFromCamera();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Choose from Gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImageFromGallery();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

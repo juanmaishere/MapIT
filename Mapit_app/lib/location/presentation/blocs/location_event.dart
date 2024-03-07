@@ -37,6 +37,13 @@ class LoadNewFriendPosts extends LocationEvent {
   LoadNewFriendPosts({required this.friend});
 }
 
+class DeletePlace extends LocationEvent {
+  final PostModel post;
+  const DeletePlace({required this.post});
+  @override
+  List<Object?> get props => [post];
+}
+
 class DeleteFriendPosts extends LocationEvent {
   final UserModel friend;
 

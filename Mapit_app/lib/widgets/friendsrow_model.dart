@@ -57,7 +57,7 @@ class FriendsRowWidget extends StatelessWidget {
                     icon: Icons.share,
                     foregroundColor: Color.fromARGB(255, 255, 255, 255),
                     onPressed: (_) {
-                      print('SlidableActionWidget pressed ...');
+                      print('$user');
                     },
                   ),
                   SlidableAction(
@@ -72,9 +72,6 @@ class FriendsRowWidget extends StatelessWidget {
                 ],
               ),
               child: ListTile(
-                leading: FaIcon(
-                  FontAwesomeIcons.userFriends,
-                ),
                 title: Text(user.name!,
                     textAlign: TextAlign.start,
                     style: TextStyle(

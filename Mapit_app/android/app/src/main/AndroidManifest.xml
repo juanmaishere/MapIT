@@ -2,7 +2,7 @@
     <application
         android:label="map"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/mapit">
         <activity
             android:name=".MainActivity"
             android:exported="true"

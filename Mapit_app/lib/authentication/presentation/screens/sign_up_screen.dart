@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:map_it/authentication/data/repositories/auth_repository.dart';
 import 'package:map_it/authentication/presentation/blocs/authentication_bloc.dart';
 import 'package:map_it/authentication/presentation/widgets/form_container.dart';
+import 'package:map_it/introduction/presentation/introduction_screen.dart';
 import 'package:map_it/navigation/stackpage.dart';
 import 'log_in_screen.dart';
 

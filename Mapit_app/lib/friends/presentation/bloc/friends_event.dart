@@ -5,12 +5,12 @@ abstract class FriendsEvent extends Equatable {
 }
 
 class AddFriend extends FriendsEvent {
-  final String userId;
+  final String userName;
 
-  const AddFriend(this.userId);
+  const AddFriend(this.userName);
 
   @override
-  List<Object?> get props => [userId];
+  List<Object?> get props => [userName];
 }
 
 class DeleteFriend extends FriendsEvent {

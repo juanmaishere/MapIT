@@ -53,6 +53,7 @@ class LocationDenied extends LocationState {}
 // Cuando hubo un error al pedir permisos.
 class LocationError extends LocationState {
   final String errorMessage;
+
   const LocationError(this.errorMessage);
   @override
   List<Object?> get props => [errorMessage];

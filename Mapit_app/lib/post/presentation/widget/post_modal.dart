@@ -10,14 +10,14 @@ class PostModal extends StatelessWidget {
   final UserModel user;
   final UserModel owner;
   final String? content;
-  final LocationBloc? bloc;
+  final LocationBloc bloc;
   PostModel post;
   PostModal({
     required this.title,
     required this.user,
     required this.post,
     required this.owner,
-    this.bloc,
+    required this.bloc,
     this.content,
   });
   @override
@@ -61,15 +61,17 @@ class PostModal extends StatelessWidget {
                               Text(
                                 post.title!,
                                 style: const TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w500),
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500
+                                ),
                               ),
                               SizedBox(height: 1),
                               Text(
                                 "@${user.name!}",
                                 style: const TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w200),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w200
+                                ),
                               ),
                             ]),
                       ),
@@ -92,7 +94,7 @@ class PostModal extends StatelessWidget {
                                     return FormModalWidget(
                                       post: post,
                                       userId: user.id,
-                                      bloc: bloc!,
+                                      bloc: bloc,
                                     );
                                   },
                                 );
@@ -109,8 +111,7 @@ class PostModal extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text('Borrar Posteo'),
-                                  content: Text(
-                                      '¿Estás seguro de borrar este posteo?'),
+                                  content: Text('¿Estás seguro de borrar este posteo?'),
                                   actions: [
                                     TextButton(
                                       child: Text('Cancelar'),
@@ -121,7 +122,7 @@ class PostModal extends StatelessWidget {
                                     TextButton(
                                       child: Text('Aceptar'),
                                       onPressed: () {
-                                        _deletePost(post);
+                                        bloc.add(DeletePlace(post: post));
                                         Navigator.of(context).pop();
                                         Navigator.of(context).pop();
                                       },
@@ -164,6 +165,4 @@ class PostModal extends StatelessWidget {
       )),
     );
   }
-
-  void _deletePost(PostModel post) {}
 }
