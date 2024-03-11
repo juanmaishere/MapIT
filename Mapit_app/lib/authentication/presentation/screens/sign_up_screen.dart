@@ -17,6 +17,7 @@ class SignUpPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => AuthBloc(authRepo: AuthRepository()),
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthFailure) {
@@ -40,9 +41,9 @@ class SignUpPage extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 228, 55, 55),
-                    Color.fromARGB(255, 22, 122, 228),
-                  ], // Replace with your gradient colors
+                    Color.fromARGB(255, 251, 93, 93),
+                    Color.fromARGB(255, 108, 54, 216),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [

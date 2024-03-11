@@ -95,7 +95,7 @@ class PostModal extends StatelessWidget {
                                   builder: (BuildContext dialogContext) {
                                     return FormModalWidget(
                                       post: post,
-                                      userId: user.id,
+                                      user: user,
                                       bloc: bloc,
                                     );
                                   },
@@ -157,7 +157,7 @@ class PostModal extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(25),
                   margin: EdgeInsets.all(1),
-                  decoration: BoxDecoration(border: Border.all(width: 0.5, color: Colors.black)),
+                  decoration: BoxDecoration(),
                     alignment: Alignment.topLeft,
                     child: ExpandableText(
                   textAlign: TextAlign.left,

@@ -23,6 +23,25 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
       body: IntroductionScreen(
           pages: [
             PageViewModel(
+              title: 'Antes de iniciar elige una foto de perfil',
+              bodyWidget: CustomCircleAvatar(
+                onTap: () async {
+                  File? selectedImage =
+                      await ImagePickerHelper.pickImageFromGallery();
+                  if (selectedImage != null) {
+                    Uint8List imageBytes = selectedImage.readAsBytesSync();
+                    setState(() {
+                      selectImage = imageBytes;
+                      isImageSelected = true;
+                      auth.updateProfileUser(selectedImage);
+                    });
+                  }
+                },
+              ),
+              image: isImageSelected ? Image.memory(selectImage) : Image.network('https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
+              decoration: getPageDecoration(),
+            ),
+            PageViewModel(
               title: 'Como usar MapIT?',
               body:
                   'MapIT te permite añadir puntos en el mapa para compartir con tus amigos en cualquier parte del mundo y en el momento que quieras',
@@ -51,25 +70,6 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   'Ahora simplemente disfruta de explorar y recorrer las experiencias y historias a lo largo del mapa',
               image: buildImage("lib/assets/mapit.png"),
               //getPageDecoration, a method to customise the page style
-              decoration: getPageDecoration(),
-            ),
-            PageViewModel(
-              title: 'Antes de iniciar elige una foto de perfil',
-              bodyWidget: CustomCircleAvatar(
-                onTap: () async {
-                  File? selectedImage =
-                      await ImagePickerHelper.pickImageFromGallery();
-                  if (selectedImage != null) {
-                    Uint8List imageBytes = selectedImage.readAsBytesSync();
-                    setState(() {
-                      selectImage = imageBytes;
-                      isImageSelected = true;
-                      auth.updateProfileUser(selectedImage);
-                    });
-                  }
-                },
-              ),
-              image: isImageSelected ? Image.memory(selectImage) : null,
               decoration: getPageDecoration(),
             ),
           ],

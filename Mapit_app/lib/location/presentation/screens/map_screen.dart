@@ -76,7 +76,7 @@ class MapScreen extends StatelessWidget {
                         builder: (BuildContext contextDialog) {
                           return FormModalWidget(
                               post: null,
-                              userId: currentUser.id,
+                              user: currentUser,
                               position: position,
                               bloc: BlocProvider.of<LocationBloc>(context));
                         },

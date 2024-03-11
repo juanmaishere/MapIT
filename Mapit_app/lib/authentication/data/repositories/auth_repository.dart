@@ -32,33 +32,25 @@ class AuthRepository {
     return AuthRepository()._firebaseAuth.currentUser!.toUser;
   }
 
- Completer<void> _updateProfileCompleter = Completer<void>();
+  void updateProfileUser(image) async {
+      final user = _firebaseAuth.currentUser;
+      if (user != null) {
+        var photo = await repo.uploadImage(image, currentUser.id);
+        await user.updatePhotoURL(photo);
+        await user.reload();
+      }
 
-void updateProfileUser(image) async {
-  try {
+  }
+
+  Future<String> getUserProfilePic() async {
     final user = _firebaseAuth.currentUser;
     if (user != null) {
-      var photo = await repo.uploadImage(image, currentUser.id);
-      await user.updatePhotoURL(photo);
       await user.reload();
-      _updateProfileCompleter.complete(); // Terminamos d subir la imagen
+      return user.photoURL!;
+    } else {
+      return 'lib/assets/user.png';
     }
-  } catch (e) {
-    // Handle exceptions
-    print("Error updating profile picture: $e");
-    _updateProfileCompleter.completeError(e); // Signal error
   }
-}
-
-Future<String> getUserProfilePic() async {
-  await _updateProfileCompleter.future; // Esperamos que termine de subir la iamgen
-  final user = _firebaseAuth.currentUser;
-  if (user != null) {
-    return user.photoURL!;
-  } else {
-    return 'lib/assets/user.png';
-  }
-}
 
   /*
   Crea un nuevo usuario con el correo electrónico y la contraseña proporcionados 
