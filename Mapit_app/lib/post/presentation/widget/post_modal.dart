@@ -36,6 +36,8 @@ class PostModal extends StatelessWidget {
           ),
         ),
         child: Column(
+          
+          mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -139,6 +141,7 @@ class PostModal extends StatelessWidget {
               ),
             ),
             Image.network(
+
               post.image!,
               width: MediaQuery.sizeOf(context).width,
               height: 350,
@@ -146,17 +149,24 @@ class PostModal extends StatelessWidget {
               alignment: Alignment(0, 0),
             ),
             Container(
-              padding: EdgeInsets.all(5),
-              margin: EdgeInsets.all(5),
+              padding: EdgeInsets.all(6),
+              margin: EdgeInsets.all(2),
               height: 150, // Set a fixed height for the text section
               alignment: Alignment.centerLeft,
               child: SingleChildScrollView(
-                child: ExpandableText(
+                child: Container(
+                  padding: EdgeInsets.all(25),
+                  margin: EdgeInsets.all(1),
+                  decoration: BoxDecoration(border: Border.all(width: 0.5, color: Colors.black)),
+                    alignment: Alignment.topLeft,
+                    child: ExpandableText(
+                  textAlign: TextAlign.left,
                   post.content!,
                   expandText: 'show more',
                   collapseText: 'show less',
                   maxLines: 2,
                   linkColor: Color.fromARGB(255, 35, 215, 247),
+                    ),
                 ),
               ),
             ),

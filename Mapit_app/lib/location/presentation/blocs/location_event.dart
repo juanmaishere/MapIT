@@ -25,7 +25,9 @@ class AddPlace extends LocationEvent {
   @override
   List<Object?> get props => [position, userId];
 }
+class LoadProfileImage extends LocationEvent {
 
+}
 class LoadFriendsPost extends LocationEvent {
   final List<UserModel> friends;
 

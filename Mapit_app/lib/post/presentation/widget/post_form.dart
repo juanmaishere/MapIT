@@ -45,8 +45,13 @@ class _FormModalWidgetState extends State<FormModalWidget> {
         _isPrivate = true;
       }
     }
-    return AlertDialog(
-      contentPadding: EdgeInsets.zero,
+    return Theme(
+      data: ThemeData(
+        // Set the background color of the AlertDialog
+        dialogBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+      ), 
+      child: AlertDialog(
+      contentPadding: EdgeInsets.fromLTRB(20, 20, 20, 20),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -56,8 +61,11 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                 _showImageSourceModal(context);
               },
               child: Container(
+                width: MediaQuery.of(context).size.width,
                 height: 200,
                 decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(25),
                   image: _selectedImage != null
                       ? DecorationImage(
                           image:
@@ -65,9 +73,8 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                           fit: BoxFit.cover,
                         )
                       : DecorationImage(
-                          image: NetworkImage(
-                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
-                          fit: BoxFit.cover,
+                          image: Image.asset('lib/assets/addphoto.png').image,
+                          fit: BoxFit.contain,
                         ),
                 ),
               ),
@@ -138,6 +145,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

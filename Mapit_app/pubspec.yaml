@@ -28,7 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  introduction_screen: 3.1.12
+  introduction_screen: 2.0.0
   curved_navigation_bar: ^1.0.3
   firebase_storage: 11.6.7 
   flutter_slidable: 3.0.1
@@ -63,10 +63,30 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: lib/assets/Roboto-Regular.ttf
+        - asset: lib/assets/Roboto-Light.ttf
+        - asset: lib/assets/Roboto-Bold.ttf
+
+    - family: Poppins
+      fonts:
+        - asset: lib/assets/Poppins-Regular.ttf
+        - asset: lib/assets/Poppins-Light.ttf
+        - asset: lib/assets/Poppins-SemiBold.ttf
+    - family: Montserrat
+      fonts:
+        - asset: lib/assets/Montserrat-Regular.ttf
+        - asset: lib/assets/Montserrat-Light.ttf
+    - family: Graffiti
+      fonts:
+        - asset: lib/assets/DonGraffiti.otf
   assets:
+    - lib/assets/user.png
+    - lib/assets/addphoto.png
     - lib/assets/mapit2.png
     - lib/assets/mapit.png
     - lib/assets/friendinactive.png

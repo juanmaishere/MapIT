@@ -1,15 +1,17 @@
 // Interfaz del repositorio de autenticación
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:http/http.dart' as http;
 import 'package:map_it/authentication/data/models/user_model.dart';
+import 'package:map_it/post/data/repositories/post_repositories.dart';
 import 'saveusertosql.dart';
 
 class AuthRepository {
   final fb.FirebaseAuth _firebaseAuth;
-
+  final repo = PostRepository();
   AuthRepository({fb.FirebaseAuth? fbAuth})
       : _firebaseAuth = fbAuth ?? fb.FirebaseAuth.instance;
   /*
@@ -29,6 +31,34 @@ class AuthRepository {
   UserModel getCurrentUser() {
     return AuthRepository()._firebaseAuth.currentUser!.toUser;
   }
+
+ Completer<void> _updateProfileCompleter = Completer<void>();
+
+void updateProfileUser(image) async {
+  try {
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      var photo = await repo.uploadImage(image, currentUser.id);
+      await user.updatePhotoURL(photo);
+      await user.reload();
+      _updateProfileCompleter.complete(); // Terminamos d subir la imagen
+    }
+  } catch (e) {
+    // Handle exceptions
+    print("Error updating profile picture: $e");
+    _updateProfileCompleter.completeError(e); // Signal error
+  }
+}
+
+Future<String> getUserProfilePic() async {
+  await _updateProfileCompleter.future; // Esperamos que termine de subir la iamgen
+  final user = _firebaseAuth.currentUser;
+  if (user != null) {
+    return user.photoURL!;
+  } else {
+    return 'lib/assets/user.png';
+  }
+}
 
   /*
   Crea un nuevo usuario con el correo electrónico y la contraseña proporcionados 
@@ -93,10 +123,12 @@ class AuthRepository {
 
   Future<UserModel?> getUserByName(String userName) async {
     try {
-      final http.Response response = await http.get(Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/search_user/$userName'));
+      final http.Response response = await http.get(Uri.parse(
+          'https://mapit-kezkcv4lwa-ue.a.run.app/search_user/$userName'));
       if (response.statusCode >= 200 && response.statusCode <= 205) {
         final resData = jsonDecode(response.body);
-        final user = UserModel(id: resData['userid'], name: resData['username']);
+        final user =
+            UserModel(id: resData['userid'], name: resData['username']);
         return user;
       } else {
         return null;

@@ -18,13 +18,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     required GeolocationRepository geolocationRepo,
   })  : _postRepository = postRepo,
         _geolocationRepository = geolocationRepo,
-      super(LocationLoading()) {
+        super(LocationLoading()) {
     on<LoadMap>(_onLoadMap);
     on<AddPlace>(_onAddPlace);
     on<DeletePlace>(_onDeletePlace);
     on<LoadFriendsPost>(_onLoadFriendsPost);
     on<LoadNewFriendPosts>(_onLoadNewFriendPosts);
     on<DeleteFriendPosts>(_onDeleteFriendPosts);
+    on<LoadProfileImage>(_reloadTheMap);
   }
   // Creamos la acción del evento LoadMap, le pasamos como argumento el evento y el emisor de estado
   void _onLoadMap(LoadMap event, Emitter<LocationState> emit) async {
@@ -36,9 +37,9 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           //Acá podemos agregar los places cercanos o todos directamente, pero primero hay que crear esas funciones
           position: state.position,
           controller: event.controller,
-          places: <String, PostModel>{for (var post in posts ?? []) post.postId!: post}
-          )
-      );
+          places: <String, PostModel>{
+            for (var post in posts ?? []) post.postId!: post
+          }));
       return;
     }
     emit(state);
@@ -74,15 +75,21 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     }
   }
 
-  void _onLoadFriendsPost(LoadFriendsPost event, Emitter<LocationState> emit) async {
+  void _reloadTheMap(LoadProfileImage event, Emitter<LocationState> emit) {
+    emit(state);
+  }
+
+  void _onLoadFriendsPost(
+      LoadFriendsPost event, Emitter<LocationState> emit) async {
     if (state is LocationLoaded) {
       LocationLoaded loadedState = state as LocationLoaded;
       if (loadedState.friendsPostsLoaded == false) {
         for (final friend in event.friends) {
           try {
-            List<PostModel>? posts = await _postRepository.getUserPost(friend.id);
+            List<PostModel>? posts =
+                await _postRepository.getUserPost(friend.id);
             if (posts != null) {
-              posts.forEach((element) { 
+              posts.forEach((element) {
                 if (loadedState.places![element.postId] == null) {
                   loadedState.places![element.postId!] = element;
                 }
@@ -91,30 +98,33 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
           } catch (e) {
             print('Error loading posts for friend ${friend.id}: $e');
           }
+        }
+        emit(loadedState.copyWith(
+            friends: event.friends, friendsPostsLoaded: true));
       }
-        emit(loadedState.copyWith(friends: event.friends, friendsPostsLoaded: true));
-      }
-      
     } else {
       print('El estado actual no es LocationLoaded');
     }
   }
 
-  void _onLoadNewFriendPosts(LoadNewFriendPosts event, Emitter<LocationState> emit) async {
+  void _onLoadNewFriendPosts(
+      LoadNewFriendPosts event, Emitter<LocationState> emit) async {
     if (state is LocationLoaded) {
       LocationLoaded loadedState = state as LocationLoaded;
       try {
-        List<PostModel>? newPosts = await _postRepository.getUserPost(event.friend.id);
-        
+        List<PostModel>? newPosts =
+            await _postRepository.getUserPost(event.friend.id);
+
         final Map<String, PostModel> posts = Map.from(loadedState.places!);
         if (newPosts != null) {
-          final List<UserModel> friends = List.from(loadedState.friends ?? [])..add(event.friend);
-          newPosts.forEach((element) { 
+          final List<UserModel> friends = List.from(loadedState.friends ?? [])
+            ..add(event.friend);
+          newPosts.forEach((element) {
             if (posts[element.postId] == null) {
               posts[element.postId!] = element;
             }
           });
-  
+
           emit(loadedState.copyWith(places: posts, friends: friends));
         } else {
           emit(const LocationError('Error al cargar los posts del amigo'));
@@ -127,7 +137,8 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     }
   }
 
-  void _onDeleteFriendPosts(DeleteFriendPosts event, Emitter<LocationState> emit) {
+  void _onDeleteFriendPosts(
+      DeleteFriendPosts event, Emitter<LocationState> emit) {
     if (state is LocationLoaded) {
       LocationLoaded loadedState = state as LocationLoaded;
       final Map<String, PostModel> posts = Map.from(loadedState.places!);

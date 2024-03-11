@@ -1,11 +1,22 @@
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:map_it/authentication/data/repositories/auth_repository.dart';
+import 'package:map_it/introduction/presentation/circle_avatar.dart';
+import 'package:map_it/location/presentation/screens/camera.dart';
+import 'package:map_it/navigation/stackpage.dart';
 
-class IntroductionScreens extends StatelessWidget {
-  const IntroductionScreens({Key? key}) : super(key: key);
+class IntroductionScreens extends StatefulWidget {
+  @override
+  _IntroductionScreensState createState() => _IntroductionScreensState();
+}
 
+class _IntroductionScreensState extends State<IntroductionScreens> {
+  Uint8List selectImage = Uint8List(0);
+  bool isImageSelected = false;
+  var auth = AuthRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,49 +24,70 @@ class IntroductionScreens extends StatelessWidget {
           pages: [
             PageViewModel(
               title: 'Como usar MapIT?',
-              body: 'MapIT te permite añadir puntos en el mapa para compartir con tus amigos en cualquier parte del mundo y en el momento que quieras',
-              image: buildImage("assets/mapit.png"),
+              body:
+                  'MapIT te permite añadir puntos en el mapa para compartir con tus amigos en cualquier parte del mundo y en el momento que quieras',
+              image: buildImage("lib/assets/mapit.png"),
               //getPageDecoration, a method to customise the page style
               decoration: getPageDecoration(),
             ),
             PageViewModel(
               title: 'Añade puntos al mapa con el boton MapIT',
-              body: 'Elije tu foto favorita de la galeria o toma una y cuentale a tus amigos porque deberian visitar el lugar o simplemente cuenta tu experiencia',
-              image: buildImage("images/newmapactive.png"),
+              body:
+                  'Elije tu foto favorita de la galeria o toma una y cuentale a tus amigos porque deberian visitar el lugar o simplemente cuenta tu experiencia',
+              image: buildImage("lib/assets/newmapactive.png"),
               //getPageDecoration, a method to customise the page style
               decoration: getPageDecoration(),
             ),
             PageViewModel(
               title: 'Añade amigos',
               body: 'Añade amigos para compartir tus puntos y ver los de ellos',
-              image: buildImage("images/friendactive.png"),
+              image: buildImage("lib/assets/friendactive.png"),
               //getPageDecoration, a method to customise the page style
               decoration: getPageDecoration(),
             ),
             PageViewModel(
               title: 'Disfruta de MapIT',
-              body: 'Ahora simplemente disfruta de explorar y recorrer las experiencias y historias a lo largo del mapa',
-              image: buildImage("images/mapit.png"),
+              body:
+                  'Ahora simplemente disfruta de explorar y recorrer las experiencias y historias a lo largo del mapa',
+              image: buildImage("lib/assets/mapit.png"),
               //getPageDecoration, a method to customise the page style
+              decoration: getPageDecoration(),
+            ),
+            PageViewModel(
+              title: 'Antes de iniciar elige una foto de perfil',
+              bodyWidget: CustomCircleAvatar(
+                onTap: () async {
+                  File? selectedImage =
+                      await ImagePickerHelper.pickImageFromGallery();
+                  if (selectedImage != null) {
+                    Uint8List imageBytes = selectedImage.readAsBytesSync();
+                    setState(() {
+                      selectImage = imageBytes;
+                      isImageSelected = true;
+                      auth.updateProfileUser(selectedImage);
+                    });
+                  }
+                },
+              ),
+              image: isImageSelected ? Image.memory(selectImage) : null,
               decoration: getPageDecoration(),
             ),
           ],
           onDone: () {
-          Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => IntroductionScreens()),
-                (route) => false,
-              );          },
-          onSkip:() {
             Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => IntroductionScreens()),
-                (route) => false,
-              );   
+              context,
+              MaterialPageRoute(builder: (context) => Stackpage()),
+              (route) => false,
+            );
+          },
+          onSkip: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => Stackpage()),
+              (route) => false,
+            );
           },
           //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
-          scrollPhysics: const ClampingScrollPhysics(),
-          showDoneButton: true,
           showNextButton: true,
           showSkipButton: true,
           skip:
@@ -82,7 +114,7 @@ class IntroductionScreens extends StatelessWidget {
     return const PageDecoration(
       imagePadding: EdgeInsets.only(top: 120),
       pageColor: Colors.white,
-      bodyPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
+      contentPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
       titlePadding: EdgeInsets.only(top: 50),
       bodyTextStyle: TextStyle(color: Colors.black54, fontSize: 15),
     );

@@ -28,7 +28,7 @@ class SignUpPage extends StatelessWidget {
             if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => Stackpage()),
+                MaterialPageRoute(builder: (context) => IntroductionScreens()),
                 (route) => false,
               );
             }

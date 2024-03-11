@@ -40,18 +40,18 @@ class Stack extends State<Stackpage> {
         items: <Widget>[
           Image.asset(
             'lib/assets/friendactive.png',
-            width: 55,
-            height: 55,
+            width: 45,
+            height: 45,
           ),
           Image.asset(
             'lib/assets/newmapactive.png',
             width: 55,
             height: 55,
           ),
-          Icon(Icons.settings, size: 40, color: Color.fromARGB(255, 38, 111, 247),),
+          Icon(Icons.settings, size: 40, color: Color.fromARGB(255, 223, 232, 249),),
         ],
-        color: Color.fromARGB(255, 4, 2, 17),
-        buttonBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+        color: Color.fromARGB(255, 2, 25, 34),
+        buttonBackgroundColor: Color.fromARGB(142, 255, 255, 255),
         animationDuration: Duration(milliseconds: 350),
         backgroundColor: Color.fromARGB(0, 0, 0, 0),
       ),

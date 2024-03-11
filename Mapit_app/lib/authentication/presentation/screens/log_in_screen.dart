@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:introduction_screen/introduction_screen.dart';
 import 'package:map_it/authentication/data/repositories/auth_repository.dart';
 import 'package:map_it/authentication/presentation/blocs/authentication_bloc.dart';
 import 'package:map_it/authentication/presentation/widgets/form_container.dart';
+import 'package:map_it/introduction/presentation/introduction_screen.dart';
 import '../../../navigation/stackpage.dart';
 
 import 'sign_up_screen.dart';
@@ -26,7 +28,7 @@ class LoginPage extends StatelessWidget {
             if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => Stackpage()),
+                MaterialPageRoute(builder: (context) => IntroductionScreens()),
                 (route) => false,
               );
             }
@@ -63,7 +65,7 @@ class LoginPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(
-                            image: AssetImage('lib/assets/mapit2.png'),
+                            image: AssetImage('lib/assets/mapit.png'),
                             height: 200,
                             width: 200,
                           ),
@@ -71,7 +73,7 @@ class LoginPage extends StatelessWidget {
                           Text(
                             "Log in",
                             style: TextStyle(
-                                fontSize: 27, fontWeight: FontWeight.bold,),
+                                fontSize: 27, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
                           ),
                           SizedBox(
                             height: 30,
@@ -89,8 +91,6 @@ class LoginPage extends StatelessWidget {
                             hintText: "Password",
                             isPasswordField: true,
                           ),
-                        
-                          
                           SizedBox(
                             height: 20,
                           ),

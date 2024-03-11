@@ -48,8 +48,7 @@ class FriendsRowWidget extends StatelessWidget {
                     backgroundColor: Color.fromARGB(226, 255, 83, 83),
                     icon: Icons.close,
                     foregroundColor: Colors.black,
-                    onPressed: (_) {
-                    },
+                    onPressed: (_) {},
                   ),
                   SlidableAction(
                     label: 'Share',
@@ -72,12 +71,13 @@ class FriendsRowWidget extends StatelessWidget {
                 ],
               ),
               child: ListTile(
-                title: Text(user.name!,
+                title: Text('@${user.name!}',
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      color: Colors.black,
+                      color: const Color.fromARGB(255, 5, 0, 0),
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: 'Roboto',
                     )),
                 tileColor: Colors.white,
                 dense: false,

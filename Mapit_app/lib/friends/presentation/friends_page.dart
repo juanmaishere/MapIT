@@ -48,7 +48,10 @@ class FriendsScreen extends StatelessWidget {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(title: Text('My Friends')),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Center(child: Text('Friends', style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.normal, fontSize: 45,),))),
         body: BlocBuilder<FriendsBloc, FriendsState>(
           builder: (context, state) {
             if (state is FriendsInitial) {
@@ -59,39 +62,41 @@ class FriendsScreen extends StatelessWidget {
               state is FriendDeleted || 
               state is FriendAdded) {
                 print('Amigos: ${state.friends}');
-                return ListView.builder(
+                return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children:[ Container(
+                  height: MediaQuery.of(context).size.height / 1.6,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(),
+                  margin: EdgeInsets.all(15),child: ListView.builder(
                   itemCount: state.friends!.length,
                   itemBuilder: (context, index) {
                     print(state.friends![index]);
                     return FriendsRowWidget(user: state.friends![index]);
                   },
-                );
-            } else if (state is FriendError){
-              return const Text('Something went wrong!');
-            } else {
-              return const SizedBox.shrink();
-            }
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
+                )),
+                Container(
+                  margin: EdgeInsets.only(bottom: 30),
+                  child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 54, 229, 176)),
+          child: const Text("Add a friend", textAlign: TextAlign.center,style: TextStyle(fontSize: 15, color: Colors.white),),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Add a friend'),
-                  content: Column(
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Add a friend'),
+                content: SingleChildScrollView(
+                  child: Column(
                     children: [
                       const Text('Enter the username of your friend'),
-                      const SizedBox(height: 10),
                       TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Username',
                           hintText: 'Enter username',
-                        )
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Row(
@@ -107,12 +112,12 @@ class FriendsScreen extends StatelessWidget {
                             onPressed: () {
                               final username = _usernameController.text;
                               if (username.isEmpty) {
-                                // Muestra un mensaje de error al usuario
+                                // Display an error message to the user
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Por favor, ingrese un valor.')),
+                                  SnackBar(content: Text('Please enter a value.')),
                                 );
                               } else {
-                                // Envía el valor al BLoC
+                                // Send the value to the BLoC
                                 context.read<FriendsBloc>().add(AddFriend(username));
                                 Navigator.of(context).pop();
                                 _usernameController.text = '';
@@ -123,10 +128,18 @@ class FriendsScreen extends StatelessWidget {
                         ],
                       ),
                     ],
-                  ) 
+                  )
+                ) 
                 );
               },
             );
+          },
+        ),)]);
+            } else if (state is FriendError){
+              return const Text('Something went wrong!');
+            } else {
+              return const SizedBox.shrink();
+            }
           },
         ),
       )
