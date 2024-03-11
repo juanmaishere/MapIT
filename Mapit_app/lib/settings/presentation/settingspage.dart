@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:map_it/authentication/data/repositories/auth_repository.dart';
+import 'package:map_it/authentication/presentation/screens/log_in_screen.dart';
 
 class SettingWidget extends StatefulWidget {
   const SettingWidget({Key? key}) : super(key: key);
@@ -7,6 +9,7 @@ class SettingWidget extends StatefulWidget {
 }
 
 class _SettingWidgetState extends State<SettingWidget> {
+  final AuthRepository _authRepository = AuthRepository();
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,6 +39,7 @@ class _SettingWidgetState extends State<SettingWidget> {
               _buildListTile(context, 'Change Log'),
               _buildListTile(context, 'Privacy Policy'),
               _buildListTile(context, 'Help'),
+              _buildListTile(context, 'Log Out', onTap: _logOut),
               Spacer(),
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 0, 0, 0),
@@ -66,7 +70,19 @@ class _SettingWidgetState extends State<SettingWidget> {
     );
   }
 
-  Widget _buildListTile(BuildContext context, String title) {
+   void _logOut() async {
+      await _authRepository.logOut();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage()
+        ),
+        (route) => false,
+      );
+  }
+
+  Widget _buildListTile(BuildContext context, String title, {VoidCallback? onTap})
+  {
     return ListTile(
       title: Text(
         title,
@@ -76,9 +92,7 @@ class _SettingWidgetState extends State<SettingWidget> {
         Icons.read_more,
         size: 20,
       ),
-      onTap: () {
-        // Handle onTap event for each list item if needed
-      },
+      onTap: onTap,
     );
   }
 }
