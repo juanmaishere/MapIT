@@ -36,7 +36,6 @@ class PostModal extends StatelessWidget {
           ),
         ),
         child: Column(
-          
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,8 +51,7 @@ class PostModal extends StatelessWidget {
                     children: [
                       CircleAvatar(
                           radius: 20,
-                          backgroundImage: NetworkImage(
-                              'https://media.istockphoto.com/id/1397756029/es/foto/gato-de-bengala-en-gafas-trabaja-en-la-mesa-en-la-computadora.jpg?s=1024x1024&w=is&k=20&c=P8sGBWf5Mqq65n2z03ajz6zHlorZePQo3_lgpmoVruc=')),
+                          backgroundImage: NetworkImage(owner.userImage!)),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Column(
@@ -63,17 +61,15 @@ class PostModal extends StatelessWidget {
                               Text(
                                 post.title!,
                                 style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w500
-                                ),
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500),
                               ),
                               SizedBox(height: 1),
                               Text(
                                 "@${owner.name}",
                                 style: const TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w200
-                                ),
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w200),
                               ),
                             ]),
                       ),
@@ -113,7 +109,8 @@ class PostModal extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: Text('Borrar Posteo'),
-                                  content: Text('¿Estás seguro de borrar este posteo?'),
+                                  content: Text(
+                                      '¿Estás seguro de borrar este posteo?'),
                                   actions: [
                                     TextButton(
                                       child: Text('Cancelar'),
@@ -141,7 +138,6 @@ class PostModal extends StatelessWidget {
               ),
             ),
             Image.network(
-
               post.image!,
               width: MediaQuery.sizeOf(context).width,
               height: 350,
@@ -149,24 +145,27 @@ class PostModal extends StatelessWidget {
               alignment: Alignment(0, 0),
             ),
             Container(
-              padding: EdgeInsets.all(6),
-              margin: EdgeInsets.all(2),
-              height: 150, // Set a fixed height for the text section
+              margin: EdgeInsets.all(7),
+              padding: EdgeInsets.all(5),
               alignment: Alignment.centerLeft,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(25),
-                  margin: EdgeInsets.all(1),
-                  decoration: BoxDecoration(),
-                    alignment: Alignment.topLeft,
-                    child: ExpandableText(
-                  textAlign: TextAlign.left,
-                  post.content!,
-                  expandText: 'show more',
-                  collapseText: 'show less',
-                  maxLines: 2,
-                  linkColor: Color.fromARGB(255, 35, 215, 247),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: 150), // Ajusta la altura máxima como necesites
+                child: Scrollbar(
+                  radius: const Radius.circular(10),
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: ExpandableText(
+                        post.content!,
+                        expandText: 'Show more',
+                        collapseText: 'Show less',
+                        expandOnTextTap: true,
+                        maxLines: 5,
+                        linkColor: Colors.grey,
+                      ),
                     ),
+                  ),
                 ),
               ),
             ),

@@ -5,21 +5,21 @@ class UserModel extends Equatable {
   final String id;
   final String? email;
   final String? name;
+  final String? userImage;
   final String? createdAt;
   final String? updatedAt;
   List<UserModel>? friends;
 
   //Constructor
-  UserModel(
-    {
-      required this.id,
-      this.email,
-      this.name,
-      this.createdAt,
-      this.updatedAt,
-      this.friends,
-    }
-  );
+  UserModel({
+    required this.id,
+    this.email,
+    this.name,
+    this.userImage,
+    this.createdAt,
+    this.updatedAt,
+    this.friends,
+  });
 
   static final empty = UserModel(id: '');
 
@@ -27,5 +27,5 @@ class UserModel extends Equatable {
   bool get isNotEmpty => this != UserModel.empty;
 
   @override
-  List<Object?> get props => [id, email, name, createdAt, updatedAt];
+  List<Object?> get props => [id, email, name, createdAt, updatedAt, userImage];
 }

@@ -38,7 +38,10 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                   }
                 },
               ),
-              image: isImageSelected ? Image.memory(selectImage) : Image.network('https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
+              image: isImageSelected
+                  ? Image.memory(selectImage)
+                  : Image.network(
+                      'https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
               decoration: getPageDecoration(),
             ),
             PageViewModel(

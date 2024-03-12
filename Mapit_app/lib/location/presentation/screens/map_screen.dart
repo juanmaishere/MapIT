@@ -119,9 +119,9 @@ class MapScreen extends StatelessWidget {
                                 final photoURL = snapshot.data;
                                 return CircleAvatar(
                                   backgroundColor:
-                                    Color.fromARGB(255, 255, 233, 233),
-                                  backgroundImage: NetworkImage(photoURL ??
-                                      'lib/assets/user.png'),
+                                      Color.fromARGB(255, 255, 233, 233),
+                                  backgroundImage: NetworkImage(
+                                      photoURL ?? 'lib/assets/user.png'),
                                 );
                               }
                             },
@@ -136,7 +136,11 @@ class MapScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w500),
                             ),
                             padding: EdgeInsets.symmetric(horizontal: 9),
-                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 3.5, 5, 0, 0),
+                            margin: EdgeInsets.fromLTRB(
+                                MediaQuery.of(context).size.width / 3.5,
+                                5,
+                                0,
+                                0),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 color: namecolor
@@ -176,7 +180,6 @@ Set<Marker> generateMarkersFromMap(Map<String, PostModel> postsMap,
   Set<Marker> markers = {};
   postsMap.forEach((postId, post) {
     BitmapDescriptor icon;
-
     if (post.private == true) {
       icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
     } else if (post.private == false) {

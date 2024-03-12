@@ -17,7 +17,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<GeolocationRepository>(
@@ -39,11 +39,12 @@ class MyApp extends StatelessWidget {
             create: (context) => LocationBloc(
               geolocationRepo: context.read<GeolocationRepository>(),
               postRepo: context.read<PostRepository>(),
-            )..add(LoadMap(user: context.read<AuthRepository>().currentUser)),
+            )..add(LoadMap(user: context.read<AuthRepository>().currentUser!)),
           ),
-          BlocProvider(create: (context) => FriendsBloc(
-            authRepo: context.read<AuthRepository>(),
-            friendsRepo: context.read<FriendshipRepository>(),
+          BlocProvider(
+            create: (context) => FriendsBloc(
+              authRepo: context.read<AuthRepository>(),
+              friendsRepo: context.read<FriendshipRepository>(),
             ),
           ),
         ],

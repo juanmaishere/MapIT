@@ -31,7 +31,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
   void _onLoadMap(LoadMap event, Emitter<LocationState> emit) async {
     final LocationState state =
         await _geolocationRepository.getCurrentLocation();
-    final posts = await _postRepository.getUserPost(event.user.id);
+    final posts = await _postRepository.getUserPost(event.user!.id);
     if (state is LocationLoaded) {
       emit(LocationLoaded(
           //Acá podemos agregar los places cercanos o todos directamente, pero primero hay que crear esas funciones

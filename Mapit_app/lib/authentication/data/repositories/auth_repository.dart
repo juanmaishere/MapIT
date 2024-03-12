@@ -19,7 +19,7 @@ class AuthRepository {
   El método map() transforma los eventos de cambio de estado en objetos User.
   Si no hay un usuario autenticado, se devuelve un User.empty.
   */
-  var currentUser = UserModel.empty;
+  UserModel? currentUser = UserModel.empty;
   Stream<UserModel> get user {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
       final user = firebaseUser == null ? UserModel.empty : firebaseUser.toUser;
@@ -33,13 +33,19 @@ class AuthRepository {
   }
 
   void updateProfileUser(image) async {
-      final user = _firebaseAuth.currentUser;
-      if (user != null) {
-        var photo = await repo.uploadImage(image, currentUser.id);
-        await user.updatePhotoURL(photo);
-        await user.reload();
-      }
-
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      var photo = await repo.uploadImage(image, currentUser!.id);
+      await user.updatePhotoURL(photo);
+      await user.reload();
+      print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBN');
+      print(photo);
+      await sendProfilePhoto(
+        user.uid,
+        user.displayName,
+        photo,
+      );
+    }
   }
 
   Future<String> getUserProfilePic() async {
@@ -105,9 +111,8 @@ class AuthRepository {
   /*cerrar la sesión */
   Future<void> logOut() async {
     try {
-      await Future.wait([
-        _firebaseAuth.signOut(),
-      ]);
+      currentUser = null;
+      await _firebaseAuth.signOut();
     } catch (_) {
       //Manejo de exepciones
     }
@@ -135,11 +140,11 @@ class AuthRepository {
 extension on fb.User {
   UserModel get toUser {
     return UserModel(
-        id: uid,
-        email: email,
-        name: displayName,
-        createdAt: DateTime.now().toString(),
-        updatedAt: DateTime.now().toString());
+      id: uid,
+      email: email,
+      name: displayName,
+      userImage: photoURL,
+    );
   }
 
 // ignore: unused_element

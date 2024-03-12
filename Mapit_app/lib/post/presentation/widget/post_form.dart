@@ -22,12 +22,13 @@ class FormModalWidget extends StatefulWidget {
   @override
   _FormModalWidgetState createState() => _FormModalWidgetState();
 }
+
 class _FormModalWidgetState extends State<FormModalWidget> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
   Uint8List? _selectedImage;
   File? selectedIMage;
-  bool _isPublic = true;
+  bool _isPrivate = false;
   bool _is24hsMode = false;
   @override
   Widget build(BuildContext context) {
@@ -39,11 +40,10 @@ class _FormModalWidgetState extends State<FormModalWidget> {
       if (user.id == post.userId) {
         _titleController.text = post.title ?? '';
         _contentController.text = post.content ?? '';
-        _isPublic = post.private ?  true : false;
+        _isPrivate = post.private;
       } else {
         _titleController.text = '';
         _contentController.text = '';
-        _isPublic = true;
       }
     }
     return OverflowBox(
@@ -52,181 +52,206 @@ class _FormModalWidgetState extends State<FormModalWidget> {
       maxWidth: MediaQuery.of(context).size.width,
       maxHeight: MediaQuery.of(context).size.height,
       child: Align(
-      alignment: AlignmentDirectional(0, 0),
-      child: Card(
-        color: const Color(0xFFF3F3F0),
+        alignment: AlignmentDirectional(0, 0),
+        child: Card(
+          color: const Color(0xFFF3F3F0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _titleController,
-                              decoration: const InputDecoration(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _titleController,
+                                decoration: const InputDecoration(
                                   hintText: 'Add a Title',
                                   border: InputBorder.none,
                                 ),
+                              ),
                             ),
-                          ),
-                          PopupMenuButton<int>(
-                            color: const Color(0xFFF3F3F0),
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: 1,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(_isPublic ? 'Público' : 'Privado'),
-                                    Icon(_isPublic ? Icons.visibility : Icons.visibility_off),
-                                  ],
+                            PopupMenuButton<int>(
+                              color: const Color(0xFFF3F3F0),
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 1,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(_isPrivate ? 'Privado' : 'Público'),
+                                      Icon(_isPrivate
+                                          ? Icons.visibility_off
+                                          : Icons.visibility),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              PopupMenuItem(
-                                value: 2,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('24hs Mode'),
-                                    Icon(_is24hsMode ? Icons.done : null),
-                                  ],
+                                PopupMenuItem(
+                                  value: 2,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text('24hs Mode'),
+                                      Icon(_is24hsMode ? Icons.done : null),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                            onSelected: (value) {
-                              if (value == 1) {
-                                _isPublic = !_isPublic;
-                              } else if (value == 2) {
-                                _is24hsMode = !_is24hsMode;
-                              }
-                            },
-                            icon: Icon(Icons.more_vert),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {_showImageSourceModal(context);},
-                      child: Container(
-                        height: 250,
-                        decoration: BoxDecoration(
-                          image: _selectedImage != null
-                            ? DecorationImage(
-                                image:MemoryImage(Uint8List.fromList(_selectedImage!)),
-                                fit: BoxFit.cover,
-                              )
-                            : DecorationImage(
-                                image: NetworkImage('https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
-                                fit: BoxFit.contain,
-                              ),
+                              ],
+                              onSelected: (value) {
+                                if (value == 1) {
+                                  _isPrivate = !_isPrivate;
+                                } else if (value == 2) {
+                                  _is24hsMode = !_is24hsMode;
+                                }
+                              },
+                              icon: Icon(Icons.more_vert),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 100), // Ajusta la altura máxima como necesites
-                        child: Scrollbar(
-                          radius: const Radius.circular(10),
-                          child: SingleChildScrollView(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: TextField(
-                                controller: _contentController,
-                                maxLength: 250,
-                                maxLines: null,
-                                keyboardType: TextInputType.multiline,
-                                decoration: InputDecoration(
-                                  hintText: 'Add Content',
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          _showImageSourceModal(context);
+                        },
+                        child: Container(
+                          height: 250,
+                          decoration: BoxDecoration(
+                            image: _selectedImage != null
+                                ? DecorationImage(
+                                    image: MemoryImage(
+                                        Uint8List.fromList(_selectedImage!)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : DecorationImage(
+                                    image: NetworkImage(
+                                        'https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
+                                    fit: BoxFit.contain,
+                                  ),
                           ),
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), // Radio de las esquinas
-                  color: Colors.transparent, // Color transparente para que el Divider sea visible
-                ),
-                child: Divider(
-                  color: Colors.black, // Color de la línea
-                  thickness: 0.5, // Grosor de la línea
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: const Color.fromARGB(255, 4, 2, 17),
-                      ),
-                      onPressed: () {Navigator.of(context).pop();},
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: const Color.fromARGB(255, 4, 2, 17),
-                      ),
-                      onPressed: () async {
-                        post = post ??
-                        PostModel(
-                          userId: user.id,
-                          postId: '${user.id}/${position!.latitude}-${position.longitude}',
-                          lat: position.latitude,
-                          lng: position.longitude,
-                          createdAt: DateTime.now().toString(),
-                        );
-                        Navigator.of(context).pop();
-                        bool saved = await _savePost(post!, user.id);
-                        if (saved) bloc.add(AddPlace(position: position!, userId: user.id, post: post!));
-                      },
-                      child: Text(
-                        'Post',
-                        style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxHeight:
+                                  100), // Ajusta la altura máxima como necesites
+                          child: Scrollbar(
+                            radius: const Radius.circular(10),
+                            child: SingleChildScrollView(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: TextField(
+                                  controller: _contentController,
+                                  maxLength: 250,
+                                  maxLines: null,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: InputDecoration(
+                                    hintText: 'Add Content',
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       )
-                    ),
-                  ]
+                    ],
+                  ),
                 ),
-              ),
-            ]
-          ),
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(10), // Radio de las esquinas
+                    color: Colors
+                        .transparent, // Color transparente para que el Divider sea visible
+                  ),
+                  child: Divider(
+                    color: Colors.black, // Color de la línea
+                    thickness: 0.5, // Grosor de la línea
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor:
+                                const Color.fromARGB(255, 4, 2, 17),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 4, 2, 17),
+                            ),
+                            onPressed: () async {
+                              post = post ??
+                                  PostModel(
+                                    userId: user.id,
+                                    postId:
+                                        '${user.id}/${position!.latitude}-${position.longitude}',
+                                    lat: position.latitude,
+                                    lng: position.longitude,
+                                    createdAt: DateTime.now().toString(),
+                                  );
+                              Navigator.of(context).pop();
+                              bool saved = await _savePost(post!, user.id);
+                              if (saved)
+                                bloc.add(AddPlace(
+                                    position: position!,
+                                    userId: user.id,
+                                    post: post!));
+                            },
+                            child: Text(
+                              'Post',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
+                            )),
+                      ]),
+                ),
+              ]),
         ),
       ),
     );
-}
+  }
 
   Future<bool> _savePost(PostModel post, String userId) async {
     final String title = _titleController.text;
     final String content = _contentController.text;
-    final bool isPublic = _isPublic;
+    final bool isPrivate = _isPrivate;
     post.image = await PostRepository().uploadImage(selectedIMage!, userId);
     if (post.image == null) return false;
     post.title = title;
     post.content = content;
-    post.private = isPublic;
+    post.private = isPrivate;
     return true;
   }
 

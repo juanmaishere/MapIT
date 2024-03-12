@@ -30,22 +30,24 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
     if (user != null) {
       bool res = await _friendshipRepository.addFriend(user.id);
       if (res == true) {
-        final List<UserModel> newFriends = List.from(state.friends ?? [])..add(user);
+        final List<UserModel> newFriends = List.from(state.friends ?? [])
+          ..add(user);
         emit(FriendAdded(friend: user, friends: newFriends));
       } else {
-        emit(FriendError());
+        emit(FriendError(errorMessage: 'Invalid username!'));
       }
     } else {
-      emit(FriendError());
+      emit(FriendError(errorMessage: 'Something went wrong!'));
     }
   }
 
   _onDeleteFriendship(DeleteFriend event, Emitter<FriendsState> emit) async {
     bool res = await _friendshipRepository.deleteFriend(event.user.id);
     if (res == true) {
-      final List<UserModel> newFriends = List.from(state.friends ?? [])..remove(event.user);
+      final List<UserModel> newFriends = List.from(state.friends ?? [])
+        ..remove(event.user);
       emit(FriendDeleted(friend: event.user, friends: newFriends));
     }
-    if (res == false) emit(FriendError());
+    if (res == false) emit(FriendError(errorMessage: 'Something went wrong!'));
   }
 }

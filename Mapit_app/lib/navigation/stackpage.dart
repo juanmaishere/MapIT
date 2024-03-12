@@ -25,6 +25,7 @@ class Stack extends State<Stackpage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
@@ -48,7 +49,11 @@ class Stack extends State<Stackpage> {
             width: 55,
             height: 55,
           ),
-          Icon(Icons.settings, size: 40, color: Color.fromARGB(255, 223, 232, 249),),
+          Icon(
+            Icons.settings,
+            size: 40,
+            color: Color.fromARGB(255, 223, 232, 249),
+          ),
         ],
         color: Color.fromARGB(255, 2, 25, 34),
         buttonBackgroundColor: Color.fromARGB(142, 255, 255, 255),

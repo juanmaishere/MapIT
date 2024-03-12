@@ -11,20 +11,23 @@ class FriendsInitial extends FriendsState {}
 class FriendDeleted extends FriendsState {
   final UserModel friend;
 
-  FriendDeleted(
-    {required this.friend, required List<UserModel>? friends}
-  ) : super(friends: friends);
+  FriendDeleted({required this.friend, required List<UserModel>? friends})
+      : super(friends: friends);
 }
 
 class FriendAdded extends FriendsState {
   final UserModel friend;
 
-  FriendAdded(
-    {required this.friend, required List<UserModel>? friends}
-  ) : super(friends: friends);
+  FriendAdded({required this.friend, required List<UserModel>? friends})
+      : super(friends: friends);
 }
 
-class FriendError extends FriendsState {}
+class FriendError extends FriendsState {
+  String errorMessage;
+
+  FriendError({required this.errorMessage, List<UserModel>? friends})
+      : super(friends: friends);
+}
 
 class FriendsLoaded extends FriendsState {
   FriendsLoaded({required List<UserModel>? friends}) : super(friends: friends);

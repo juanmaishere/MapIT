@@ -30,7 +30,7 @@ class FriendsRowWidget extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Image.network(
-              'https://picsum.photos/seed/486/600',
+              user.userImage!,
               fit: BoxFit.cover,
             ),
           ),

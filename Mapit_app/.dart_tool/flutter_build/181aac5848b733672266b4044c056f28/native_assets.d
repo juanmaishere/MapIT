@@ -1,1 +1,0 @@
- C:\\dev\\dev\\MapIT\\Mapit_app\\.dart_tool\\flutter_build\\181aac5848b733672266b4044c056f28\\native_assets.yaml: 
