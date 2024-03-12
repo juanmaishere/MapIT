@@ -69,7 +69,7 @@ class PostModal extends StatelessWidget {
                               ),
                               SizedBox(height: 1),
                               Text(
-                                "@${user.name!}",
+                                "@${owner.name}",
                                 style: const TextStyle(
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w200

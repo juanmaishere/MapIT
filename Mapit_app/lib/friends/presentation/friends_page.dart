@@ -84,52 +84,55 @@ class FriendsScreen extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) {
-              return AlertDialog(
-                title: const Text('Add a friend'),
-                content: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const Text('Enter the username of your friend'),
-                      TextField(
-                        controller: _usernameController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Username',
-                          hintText: 'Enter username',
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('Cancel'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              final username = _usernameController.text;
-                              if (username.isEmpty) {
-                                // Display an error message to the user
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Please enter a value.')),
-                                );
-                              } else {
-                                // Send the value to the BLoC
-                                context.read<FriendsBloc>().add(AddFriend(username));
-                                Navigator.of(context).pop();
-                                _usernameController.text = '';
-                              }
-                            },
-                            child: const Text('Add'),
+              double maxHeight = MediaQuery.of(context).size.height * 0.8;
+
+    return AlertDialog(
+      backgroundColor: Colors.white,
+      title: const Text('Add a friend'),
+        content: ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: maxHeight),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Use min to limit the height
+            children: [
+              const Text('Enter the username of your friend'),
+              SizedBox(height: 25),
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                  hintText: 'Enter username',
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      final username = _usernameController.text;
+                      if (username.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please enter a value.')),
+                        );
+                      } else {
+                        context.read<FriendsBloc>().add(AddFriend(username));
+                        Navigator.of(context).pop();
+                        _usernameController.text = '';
+                      }
+                    },
+                    child: const Text('Add'),
                           ),
                         ],
                       ),
                     ],
-                  )
-                ) 
+                  ))
                 );
               },
             );

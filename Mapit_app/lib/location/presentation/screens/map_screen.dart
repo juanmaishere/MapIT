@@ -45,6 +45,7 @@ class MapScreen extends StatelessWidget {
             return Stack(
               children: [
                 GoogleMap(
+                  padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
                   myLocationEnabled: true,
                   buildingsEnabled: false,
                   trafficEnabled: false,
@@ -99,7 +100,7 @@ class MapScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.fromLTRB(5, 40, 5, 0),
+                    margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,10 +117,9 @@ class MapScreen extends StatelessWidget {
                                 return Text('Error: ${snapshot.error}');
                               } else {
                                 final photoURL = snapshot.data;
-
                                 return CircleAvatar(
                                   backgroundColor:
-                                      Color.fromARGB(255, 255, 233, 233),
+                                    Color.fromARGB(255, 255, 233, 233),
                                   backgroundImage: NetworkImage(photoURL ??
                                       'lib/assets/user.png'),
                                 );
@@ -136,7 +136,7 @@ class MapScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w500),
                             ),
                             padding: EdgeInsets.symmetric(horizontal: 9),
-                            margin: EdgeInsets.all(3),
+                            margin: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width / 3.5, 5, 0, 0),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 color: namecolor
