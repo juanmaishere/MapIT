@@ -140,15 +140,20 @@ def friends(id = None):
     if request.method == 'GET':
         if id is None:
             return jsonify("Se requiere el parametro 'user_id'")
-        friends_data = db.session.query(Friend.user2_id, Users.username).\
-            join(Users, or_(Friend.user1_id == Users.userid, Friend.user2_id == Users.userid)).\
-            filter(Friend.user1_id == id).all()
+        
+        # Updated query to include userimage
+        friends_data = db.session.query(Friend.user1_id, Users.username, Users.userimage).\
+            join(Users, Friend.user1_id == Users.userid).\
+            filter(Friend.user2_id == id).all()
+        
         unique_friend_ids = set()
         friends_list = []
-        for friend_id, username in friends_data:
+        for friend_id, username, userimage in friends_data:
             if friend_id not in unique_friend_ids:
                 unique_friend_ids.add(friend_id)
-                friends_list.append({'friend_id': friend_id, 'username': username})
+                # Adjusting the structure to include userimage
+                friends_list.append({'friend_id': friend_id, 'username': username, 'userimage': userimage})
+        
         return jsonify(friends_list), 200
     if request.method == 'DELETE':
         data = request.json

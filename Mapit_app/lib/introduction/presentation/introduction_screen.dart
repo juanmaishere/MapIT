@@ -83,18 +83,9 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
               (route) => false,
             );
           },
-          onSkip: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Stackpage()),
-              (route) => false,
-            );
-          },
-          //ClampingScrollPhysics prevent the scroll offset from exceeding the bounds of the content.
-          showNextButton: true,
-          showSkipButton: true,
-          skip:
-              const Text("Skip", style: TextStyle(fontWeight: FontWeight.w600)),
+          freeze: true,
+          showSkipButton: false,
+          showNextButton: isImageSelected ? true : false,
           next: const Icon(Icons.forward),
           done:
               const Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
@@ -117,7 +108,7 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
     return const PageDecoration(
       imagePadding: EdgeInsets.only(top: 120),
       pageColor: Colors.white,
-      contentPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
+      bodyPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
       titlePadding: EdgeInsets.only(top: 50),
       bodyTextStyle: TextStyle(color: Colors.black54, fontSize: 15),
     );

@@ -15,12 +15,15 @@ class FriendshipRepository {
 
     if (response.statusCode >= 200 && response.statusCode <= 205) {
       List<dynamic>? resData = jsonDecode(response.body);
+      print(response.body);
       if (resData != null) {
         List<UserModel> friends = resData
-            .map((e) =>
-                UserModel(id: e['friend_id'] ?? '', name: e['username'] ?? ''))
+            .map((e) => UserModel(
+                id: e['friend_id'] ?? '',
+                name: e['username'] ?? '',
+                userImage: e['userimage'] ??
+                    'https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'))
             .toList();
-
         return friends;
       } else {
         throw Exception('Response data is null');

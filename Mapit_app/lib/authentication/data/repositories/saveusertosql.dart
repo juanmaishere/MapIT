@@ -27,7 +27,7 @@ Future<void> sendProfilePhoto(userid, username, userimage) async {
   print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   print(userimage);
   final response = await http.put(
-    Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/user'),
+    Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/user/$userid'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -40,7 +40,6 @@ Future<void> sendProfilePhoto(userid, username, userimage) async {
   if (response.statusCode == 200) {
     print('User data sent successfully');
   } else {
-    throw Exception('Failed to send user data');
     print(response);
   }
 }

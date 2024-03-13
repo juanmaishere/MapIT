@@ -96,9 +96,9 @@ class _FriendsScreenState extends State<FriendsScreen> {
                           child: ListView.builder(
                             itemCount: state.friends!.length,
                             itemBuilder: (context, index) {
-                              print(state.friends![index]);
+                              print(state.friends?[index]);
                               return FriendsRowWidget(
-                                  user: state.friends![index]);
+                                  user: state.friends?[index]);
                             },
                           )),
                       Container(

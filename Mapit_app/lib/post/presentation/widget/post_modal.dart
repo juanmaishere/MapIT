@@ -51,7 +51,8 @@ class PostModal extends StatelessWidget {
                     children: [
                       CircleAvatar(
                           radius: 20,
-                          backgroundImage: NetworkImage(owner.userImage!)),
+                          backgroundImage: NetworkImage(owner.userImage ??
+                              'https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png')),
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Column(

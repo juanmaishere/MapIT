@@ -124,8 +124,10 @@ class AuthRepository {
           'https://mapit-kezkcv4lwa-ue.a.run.app/search_user/$userName'));
       if (response.statusCode >= 200 && response.statusCode <= 205) {
         final resData = jsonDecode(response.body);
-        final user =
-            UserModel(id: resData['userid'], name: resData['username']);
+        final user = UserModel(
+            id: resData['userid'],
+            name: resData['username'],
+            userImage: resData['userimage']);
         return user;
       } else {
         return null;

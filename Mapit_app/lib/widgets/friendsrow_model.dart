@@ -8,11 +8,11 @@ import 'package:map_it/friends/presentation/bloc/friends_bloc.dart';
 export 'friendsrow_model.dart';
 
 class FriendsRowWidget extends StatelessWidget {
-  final UserModel user;
+  final UserModel? user;
 
   const FriendsRowWidget({
     Key? key,
-    required this.user,
+    this.user,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class FriendsRowWidget extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Image.network(
-              user.userImage!,
+              user!.userImage!,
               fit: BoxFit.cover,
             ),
           ),
@@ -65,13 +65,15 @@ class FriendsRowWidget extends StatelessWidget {
                     icon: Icons.delete,
                     foregroundColor: Color.fromARGB(255, 0, 0, 0),
                     onPressed: (_) {
-                      context.read<FriendsBloc>().add(DeleteFriend(user: user));
+                      context
+                          .read<FriendsBloc>()
+                          .add(DeleteFriend(user: user!));
                     },
                   ),
                 ],
               ),
               child: ListTile(
-                title: Text('@${user.name!}',
+                title: Text('@${user!.name}',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       color: const Color.fromARGB(255, 5, 0, 0),
