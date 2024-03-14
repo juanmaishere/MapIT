@@ -118,6 +118,7 @@ class MapScreen extends StatelessWidget {
                               } else {
                                 final photoURL = snapshot.data;
                                 return CircleAvatar(
+                                  radius: 22,
                                   backgroundColor:
                                       Color.fromARGB(255, 255, 233, 233),
                                   backgroundImage: NetworkImage(
@@ -137,7 +138,7 @@ class MapScreen extends StatelessWidget {
                             ),
                             padding: EdgeInsets.symmetric(horizontal: 9),
                             margin: EdgeInsets.fromLTRB(
-                                MediaQuery.of(context).size.width / 3.5,
+                                MediaQuery.of(context).size.width / 3.55,
                                 5,
                                 0,
                                 0),

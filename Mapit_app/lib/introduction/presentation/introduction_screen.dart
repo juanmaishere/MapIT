@@ -39,9 +39,22 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
                 },
               ),
               image: isImageSelected
-                  ? Image.memory(selectImage)
-                  : Image.network(
-                      'https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
+                  ? CircleAvatar(
+                      radius: 100,
+                      child: Image.memory(
+                        selectImage,
+                        fit: BoxFit.cover,
+                        width: 250,
+                        height: 250,
+                      ))
+                  : CircleAvatar(
+                      radius: 100,
+                      child: Image.network(
+                        'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=',
+                        width: 250,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      )),
               decoration: getPageDecoration(),
             ),
             PageViewModel(
@@ -106,10 +119,10 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
   //method to customise the page style
   PageDecoration getPageDecoration() {
     return const PageDecoration(
-      imagePadding: EdgeInsets.only(top: 120),
+      imagePadding: EdgeInsets.only(top: 120, bottom: 20),
       pageColor: Colors.white,
-      bodyPadding: EdgeInsets.only(top: 8, left: 20, right: 20),
-      titlePadding: EdgeInsets.only(top: 50),
+      bodyPadding: EdgeInsets.only(top: 8, left: 20, right: 20, bottom: 15),
+      titlePadding: EdgeInsets.only(top: 50, bottom: 50),
       bodyTextStyle: TextStyle(color: Colors.black54, fontSize: 15),
     );
   }

@@ -11,9 +11,10 @@ class CustomCircleAvatar extends StatelessWidget {
       onTap: onTap,
       child: CircleAvatar(
         radius: 30, // Set your desired radius
-        backgroundColor: Color.fromARGB(255, 0, 0, 0), // Set your desired background color
+        backgroundColor:
+            Color.fromARGB(255, 0, 0, 0), // Set your desired background color
         child: Icon(
-          Icons.person,
+          Icons.add_a_photo,
           color: Colors.white, // Set your desired icon color
         ),
       ),

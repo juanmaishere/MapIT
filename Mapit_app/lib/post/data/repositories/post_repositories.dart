@@ -9,8 +9,8 @@ import 'package:path/path.dart';
 class PostRepository {
   //Llamada a la api con http para que traiga un post de un usuario
   Future<List<PostModel>?> getUserPost(String userId) async {
-    final http.Response response = await http.get(Uri.parse(
-        'https://mapit-kezkcv4lwa-ue.a.run.app/places/$userId'));
+    final http.Response response = await http
+        .get(Uri.parse('https://mapit-kezkcv4lwa-ue.a.run.app/places/$userId'));
     if (response.statusCode >= 200 && response.statusCode <= 205) {
       // Si el servidor devuelve una respuesta OK, parseamos el JSON
 
@@ -29,7 +29,6 @@ class PostRepository {
     } else {
       // Si la respuesta no es OK, lanzamos un error
       return null;
-      
     }
   }
 
@@ -56,7 +55,7 @@ class PostRepository {
       headers: {'Content-Type': 'application/json'},
       body: jsonPost,
     );
-  
+
     if (response.statusCode >= 200 && response.statusCode <= 205) {
       print('PLACE ELIMINADO');
       return true;

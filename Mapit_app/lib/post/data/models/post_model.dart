@@ -10,9 +10,9 @@ class PostModel extends Equatable {
   String? image;
   String? title;
   String updatedAt;
-  bool private;
+  bool? private;
   PostModel({
-    this.private = true,
+    this.private,
     required this.postId,
     this.title,
     required this.lat,
@@ -33,7 +33,7 @@ class PostModel extends Equatable {
       'url_post_photo': image,
       'user_id': userId,
       'post_title': title,
-      'private': private,
+      'private': false,
     };
   }
 

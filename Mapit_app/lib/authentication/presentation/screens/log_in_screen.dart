@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
             if (state is AuthSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => IntroductionScreens()),
+                MaterialPageRoute(builder: (context) => Stackpage()),
                 (route) => false,
               );
             }
@@ -46,10 +46,7 @@ class LoginPage extends StatelessWidget {
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  stops: [
-                    0.0,
-                    1.0
-                  ], 
+                  stops: [0.0, 1.0],
                   tileMode: TileMode.clamp,
                 ),
               ),
@@ -74,7 +71,9 @@ class LoginPage extends StatelessWidget {
                           Text(
                             "Log in",
                             style: TextStyle(
-                                fontSize: 27, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
+                                fontSize: 27,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Roboto'),
                           ),
                           SizedBox(
                             height: 30,
@@ -95,69 +94,69 @@ class LoginPage extends StatelessWidget {
                           SizedBox(
                             height: 20,
                           ),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<AuthBloc>().add(
-                              AuthLoginRequested(
-                                email: _emailController.text,
-                                password: _passwordController.text,
+                          GestureDetector(
+                            onTap: () {
+                              context.read<AuthBloc>().add(
+                                    AuthLoginRequested(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  );
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 233, 44, 44),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            );
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 233, 44, 44),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                              child: Center(
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          SizedBox(height: 10),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Don't have an account?"),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignUpPage()),
+                                    (route) => false,
+                                  );
+                                },
+                                child: Text(
+                                  "Sign Up",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Don't have an account?"),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignUpPage()),
-                              (route) => false,
-                            );
-                          },
-                          child: Text(
-                            "Sign Up",
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               ),
-                ),
-              ),
-            ),
             );
           },
         ),
