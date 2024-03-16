@@ -86,6 +86,7 @@ flutter:
       fonts:
         - asset: lib/assets/DonGraffiti.otf
   assets:
+    - lib/assets/markers.png
     - lib/assets/user.png
     - lib/assets/addphoto.png
     - lib/assets/mapit2.png

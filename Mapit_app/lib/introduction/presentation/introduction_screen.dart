@@ -17,6 +17,15 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
   Uint8List selectImage = Uint8List(0);
   bool isImageSelected = false;
   var auth = AuthRepository();
+  String message = """
+Elije tu foto favorita de la galeria o toma una y cuentale a tus amigos porque deberian visitar el lugar o simplemente cuenta tu experiencia
+
+
+Hay marcadores de todo tipo
+- Markers por 24 Horas
+- Markers Privado
+- Markers Publicos y mas
+""";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,15 +70,15 @@ class _IntroductionScreensState extends State<IntroductionScreens> {
               title: 'Como usar MapIT?',
               body:
                   'MapIT te permite añadir puntos en el mapa para compartir con tus amigos en cualquier parte del mundo y en el momento que quieras',
-              image: buildImage("lib/assets/mapit.png"),
+              image: buildImage("lib/assets/newmapactive.png"),
               //getPageDecoration, a method to customise the page style
               decoration: getPageDecoration(),
             ),
             PageViewModel(
               title: 'Añade puntos al mapa con el boton MapIT',
-              body:
-                  'Elije tu foto favorita de la galeria o toma una y cuentale a tus amigos porque deberian visitar el lugar o simplemente cuenta tu experiencia',
-              image: buildImage("lib/assets/newmapactive.png"),
+              body: message,
+              image: buildImage("lib/assets/markers.png"),
+
               //getPageDecoration, a method to customise the page style
               decoration: getPageDecoration(),
             ),
