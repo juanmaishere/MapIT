@@ -20,6 +20,7 @@ class _SettingWidgetState extends State<SettingWidget> {
           key: GlobalKey<ScaffoldState>(),
           backgroundColor: Colors.white,
           body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -70,19 +71,17 @@ class _SettingWidgetState extends State<SettingWidget> {
     );
   }
 
-   void _logOut() async {
-      await _authRepository.logOut();
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage()
-        ),
-        (route) => false,
-      );
+  void _logOut() async {
+    await _authRepository.logOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (route) => false,
+    );
   }
 
-  Widget _buildListTile(BuildContext context, String title, {VoidCallback? onTap})
-  {
+  Widget _buildListTile(BuildContext context, String title,
+      {VoidCallback? onTap}) {
     return ListTile(
       title: Text(
         title,

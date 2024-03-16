@@ -45,6 +45,7 @@ class AuthRepository {
         user.displayName,
         photo,
       );
+      currentUser!.userImage = photo;
     }
   }
 
@@ -78,7 +79,7 @@ class AuthRepository {
         /*! en Dart se llama “postfix not null assertion”.
         Se utiliza para decirle al analizador de Dart que la expresión que precede no será null.
         */
-        id: fireBaseUser!
+        id: fireBaseUser
             .uid, //significa que estás seguro de que fireBaseUser no será null cuando se acceda a su propiedad uid. Si fireBaseUser fuera null, se lanzaría un error en tiempo de ejecución
         email: fireBaseUser.email,
         name: name,

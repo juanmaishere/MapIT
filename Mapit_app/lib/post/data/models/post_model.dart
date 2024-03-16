@@ -10,11 +10,14 @@ class PostModel extends Equatable {
   String? image;
   String? title;
   String updatedAt;
-  bool? private;
+  bool private;
+  bool temporary;
+
   PostModel({
-    this.private,
+    this.private = false,
     required this.postId,
     this.title,
+    this.temporary = false,
     required this.lat,
     required this.lng,
     this.createdAt,
@@ -33,7 +36,8 @@ class PostModel extends Equatable {
       'url_post_photo': image,
       'user_id': userId,
       'post_title': title,
-      'private': false,
+      'private': private,
+      'temporary': temporary,
     };
   }
 
@@ -48,7 +52,8 @@ class PostModel extends Equatable {
         updatedAt,
         lat,
         lng,
-        private
+        private,
+        temporary
       ];
   void dispose() {
     // Realiza cualquier limpieza de recursos aquí, si es necesario

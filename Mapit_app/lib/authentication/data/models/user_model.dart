@@ -5,7 +5,7 @@ class UserModel extends Equatable {
   final String id;
   final String? email;
   final String? name;
-  final String? userImage;
+  String? userImage;
   final String? createdAt;
   final String? updatedAt;
   List<UserModel>? friends;

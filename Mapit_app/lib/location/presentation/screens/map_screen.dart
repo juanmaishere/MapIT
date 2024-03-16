@@ -45,13 +45,15 @@ class MapScreen extends StatelessWidget {
             return Stack(
               children: [
                 GoogleMap(
-                  padding: EdgeInsets.fromLTRB(0, 35, 0, 0),
+                  padding: EdgeInsets.fromLTRB(500, 0, 500, 0),
                   myLocationEnabled: true,
+                  compassEnabled: false,
                   buildingsEnabled: false,
                   trafficEnabled: false,
                   zoomControlsEnabled: false,
+                  myLocationButtonEnabled: false,
                   onMapCreated: (GoogleMapController controller) {
-                    controller.setMapStyle(mapStyle2);
+                    controller.setMapStyle(mapStyle1);
                     _mapController = controller; // Save the controller instance
                     context.read<LocationBloc>().add(
                         LoadMap(controller: controller, user: currentUser));
@@ -100,11 +102,11 @@ class MapScreen extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.fromLTRB(10, 45, 10, 0),
+                    margin: EdgeInsets.fromLTRB(20, 45, 0, 0),
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           FutureBuilder<String>(
                             future: repo.getUserProfilePic(),
@@ -137,19 +139,35 @@ class MapScreen extends StatelessWidget {
                                   fontWeight: FontWeight.w500),
                             ),
                             padding: EdgeInsets.symmetric(horizontal: 9),
-                            margin: EdgeInsets.fromLTRB(
-                                MediaQuery.of(context).size.width / 3.55,
-                                5,
-                                0,
-                                0),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 color: namecolor
-                                    ? Color.fromARGB(255, 1, 14, 19)
+                                    ? Color.fromARGB(150, 236, 238, 238)
                                     : Color.fromARGB(95, 255, 255, 255),
                                 border: Border.all(
                                     color: Colors.black, width: 1.5)),
                           ),
+                          ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 2, 25, 34),
+                                  shape: CircleBorder()),
+                              onPressed: () async {
+                                var position =
+                                    await Geolocator.getCurrentPosition();
+                                _mapController.animateCamera(
+                                    CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                      target: LatLng(position.latitude,
+                                          position.longitude),
+                                      zoom:
+                                          await _mapController.getZoomLevel()),
+                                ));
+                              },
+                              child: Icon(
+                                Icons.my_location,
+                                color: Color.fromARGB(255, 50, 190, 245),
+                              ))
                         ])),
                 Positioned(
                   top: 50.0, // Adjust the top position as needed
@@ -182,10 +200,10 @@ Set<Marker> generateMarkersFromMap(Map<String, PostModel> postsMap,
   postsMap.forEach((postId, post) {
     BitmapDescriptor icon;
     if (post.private == true) {
-      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueViolet);
-    } else if (post.private == false) {
+      icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue);
+    } else if (post.private == false && post.temporary == false) {
       icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed);
-    } else if (post.image == null) {
+    } else if (post.temporary == true) {
       icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueYellow);
     } else {
       icon = BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRose);

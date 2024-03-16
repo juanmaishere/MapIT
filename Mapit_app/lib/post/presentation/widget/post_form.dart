@@ -122,6 +122,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                           _showImageSourceModal(context);
                         },
                         child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 15),
                           height: 250,
                           decoration: BoxDecoration(
                             image: _selectedImage != null
@@ -131,8 +132,9 @@ class _FormModalWidgetState extends State<FormModalWidget> {
                                     fit: BoxFit.cover,
                                   )
                                 : DecorationImage(
+                                    scale: 0.4,
                                     image: NetworkImage(
-                                        'https://cdn.pixabay.com/photo/2021/07/25/08/07/add-6491203_1280.png'),
+                                        'https://uxwing.com/wp-content/themes/uxwing/download/video-photography-multimedia/add-image-photo-icon.png'),
                                     fit: BoxFit.contain,
                                   ),
                           ),
@@ -252,6 +254,7 @@ class _FormModalWidgetState extends State<FormModalWidget> {
     post.title = title;
     post.content = content;
     post.private = isPrivate;
+    post.temporary = _is24hsMode;
     return true;
   }
 
